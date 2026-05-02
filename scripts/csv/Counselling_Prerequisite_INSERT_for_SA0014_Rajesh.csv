@@ -1,0 +1,4 @@
+Document_Type__c,Due_Before__c,Is_Required__c,Is_Satisfied__c,Related_Appointment__c
+Insurance_Card,2026-05-14T12:00:00.000Z,true,false,08pak000000L06fAAC
+Consent,2026-05-14T12:00:00.000Z,true,false,08pak000000L06fAAC
+ID_Card,2026-05-13T18:30:00.000Z,true,true,08pak000000L06fAAC

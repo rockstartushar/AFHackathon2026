@@ -1,0 +1,39 @@
+<template>
+    <div class="hc-ech-header" role="banner">
+        <div class="hc-ech-brand">
+            <template if:true={showLogo}>
+                <img
+                    class="hc-ech-logo"
+                    src={logoSrc}
+                    alt=""
+                    width="120"
+                    height="32"
+                    onerror={handleLogoError}
+                />
+            </template>
+            <template if:false={showLogo}>
+                <span class="hc-ech-title">{displayTitle}</span>
+            </template>
+        </div>
+        <div class="hc-ech-actions">
+            <button
+                type="button"
+                class="hc-ech-btn hc-ech-btn-min"
+                title="Minimize — collapse the chat window"
+                aria-label="Minimize chat"
+                onclick={handleMinimize}
+            >
+                <span class="hc-ech-icon" aria-hidden="true">&#8212;</span>
+            </button>
+            <button
+                type="button"
+                class="hc-ech-btn hc-ech-btn-close"
+                title="Close — end chat and hide the window"
+                aria-label="Close chat"
+                onclick={handleClose}
+            >
+                <span class="hc-ech-icon" aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</template>

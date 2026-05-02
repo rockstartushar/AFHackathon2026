@@ -1,0 +1,42 @@
+{
+  "required" : [ "input_ActionName", "input_Status" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "input_ActionName" : {
+      "title" : "input_ActionName",
+      "description" : "Short audit label, e.g. HC_Find_Specialist, HC_Booking_BOOK.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "input_CorrelationId" : {
+      "title" : "input_CorrelationId",
+      "description" : "Tie to session/conversation Id for demos.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "input_ErrorMessage" : {
+      "title" : "input_ErrorMessage",
+      "description" : "High-level failure reason for ops—no PHI, no stack traces (patients may trigger logs indirectly).",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "input_InputSummary" : {
+      "title" : "input_InputSummary",
+      "description" : "Redacted, non-PHI label of what was attempted (e.g. “book Chennai facility”)—not free-text patient quotes.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "input_Status" : {
+      "title" : "input_Status",
+      "description" : "Success or Failed per Agent_Action_Log__c.Status__c.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

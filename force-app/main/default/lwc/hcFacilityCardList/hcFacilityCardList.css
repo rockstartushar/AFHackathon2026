@@ -1,0 +1,49 @@
+.hc-fac-wrap {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    padding: 0.25rem 0;
+}
+
+.hc-fac-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.hc-fac-card {
+    border: 1px solid var(--slds-g-color-border-base-1, #dddbda);
+    border-radius: 0.5rem;
+    padding: 0.65rem 0.75rem;
+    background: linear-gradient(180deg, #ffffff 0%, var(--slds-g-color-neutral-base-100, #fafaf9) 100%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hc-fac-card:hover {
+    border-color: var(--slds-g-color-border-brand-1, #1b96ff);
+    box-shadow: 0 2px 6px rgba(3, 45, 96, 0.1);
+}
+
+.hc-fac-card-title {
+    font-weight: 600;
+}
+
+.hc-fac-card-sub {
+    color: var(--slds-g-color-neutral-base-30, #706e6b);
+    font-size: 0.75rem;
+    margin-top: 0.15rem;
+    word-break: break-all;
+}
+
+.hc-fac-empty {
+    margin: 0;
+    color: var(--slds-g-color-neutral-base-30, #706e6b);
+}
+
+.hc-fac-error {
+    margin: 0;
+    color: var(--slds-g-color-error-base-50, #ba0517);
+}

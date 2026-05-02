@@ -1,0 +1,27 @@
+<template>
+    <div class="hc-sr-wrap">
+        <template if:true={payloadObj}>
+            <article class="hc-sr-card" aria-label="Specialty suggestion">
+                <header class="hc-sr-head">
+                    <p class="hc-sr-kicker">Suggested specialty</p>
+                    <h2 class="hc-sr-title">{specialtyTitle}</h2>
+                    <template if:false={matchFound}>
+                        <span class="hc-sr-chip hc-sr-chip-soft">General guidance</span>
+                    </template>
+                    <template if:true={matchFound}>
+                        <span class="hc-sr-chip">Matched to your description</span>
+                    </template>
+                </header>
+                <div class="hc-sr-body">
+                    <p class="hc-sr-summary">{summaryText}</p>
+                </div>
+                <footer class="hc-sr-foot">
+                    <p class="hc-sr-disclaimer">{disclaimerText}</p>
+                </footer>
+            </article>
+        </template>
+        <template if:false={payloadObj}>
+            <p class="hc-sr-empty">Unable to help to help with this symptom.</p>
+        </template>
+    </div>
+</template>

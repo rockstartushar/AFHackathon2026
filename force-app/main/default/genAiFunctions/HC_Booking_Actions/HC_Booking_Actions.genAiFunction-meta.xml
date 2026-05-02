@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Creates, reschedules, or cancels visits: BOOK / MODIFY / CANCEL on ServiceAppointment and ClinicalEncounter. Use only after the patient is verified (matched Person Account). Do not use for directory search (use HC Find Specialist) or insurance/prereq lists (use HC Patient Data Actions). Enforces facility daily cap when Max_Daily_Appointments__c is set.</description>
+    <developerName>HC_Booking_Actions</developerName>
+    <invocationTarget>HC_BookingActionsInvocable</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_Booking_Actions</localDeveloperName>
+    <masterLabel>HC Booking Actions</masterLabel>
+    <progressIndicatorMessage>Updating your appointment…</progressIndicatorMessage>
+</GenAiFunction>

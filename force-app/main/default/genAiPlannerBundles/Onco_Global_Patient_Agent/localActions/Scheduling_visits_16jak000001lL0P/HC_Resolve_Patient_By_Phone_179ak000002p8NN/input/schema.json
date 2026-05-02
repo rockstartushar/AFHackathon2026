@@ -1,0 +1,14 @@
+{
+  "required" : [ "input_Phone" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "input_Phone" : {
+      "title" : "input_Phone",
+      "description" : "Exact match to Person Account PersonMobilePhone (format as user states; normalize in data).",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

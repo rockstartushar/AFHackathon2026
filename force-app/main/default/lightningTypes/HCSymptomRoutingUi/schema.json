@@ -1,0 +1,5 @@
+{
+  "title" : "HC Symptom Routing UI",
+  "description" : "Single card for specialty routing (payload JSON from HC_SymptomRoutingInvocable).",
+  "lightning:type" : "@apexClassType/c__HCSymptomRoutingUiModel"
+}

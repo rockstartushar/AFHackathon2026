@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Suggests available appointment time slots for a given facility and date range. Call this before booking to show patients available times. Returns a list of suggested appointment slots with date and time information.</description>
+    <developerName>HC_Slot_Suggestion</developerName>
+    <invocationTarget>HC_SlotSuggestionInvocable</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_Slot_Suggestion</localDeveloperName>
+    <masterLabel>HC Slot Suggestion</masterLabel>
+    <progressIndicatorMessage>Finding available times…</progressIndicatorMessage>
+</GenAiFunction>

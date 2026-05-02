@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Routes patient symptoms to the appropriate medical specialty. Takes a symptom description as input and returns a recommended specialty name for use with HC Find Specialist. Navigation and education only—not diagnosis.</description>
+    <developerName>HC_Route_Symptom_To_Specialty</developerName>
+    <invocationTarget>HC_SymptomRoutingInvocable</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_Route_Symptom_To_Specialty</localDeveloperName>
+    <masterLabel>HC Route Symptom to Specialty</masterLabel>
+    <progressIndicatorMessage>Mapping your request…</progressIndicatorMessage>
+</GenAiFunction>

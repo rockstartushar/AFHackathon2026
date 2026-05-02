@@ -1,0 +1,14 @@
+{
+  "required": ["RawSummaryFromTool"],
+  "unevaluatedProperties": false,
+  "properties": {
+    "RawSummaryFromTool": {
+      "title": "RawSummaryFromTool",
+      "description": "Plain text from HC_Patient_Data_Actions (INSURANCE, PREREQUISITES, ROOM_RATES sections) to rewrite for the patient.",
+      "lightning:type": "lightning__multilineTextType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

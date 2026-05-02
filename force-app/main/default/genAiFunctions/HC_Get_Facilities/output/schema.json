@@ -1,0 +1,15 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "facilityListUi" : {
+      "title" : "Facility list result",
+      "description" : "Single structured output: parse payload for success, message, summaryText (agent), and rows (cards).",
+      "lightning:type" : "@apexClassType/c__HCFacilityListUiModel",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true,
+      "copilotAction:useHydratedPrompt" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

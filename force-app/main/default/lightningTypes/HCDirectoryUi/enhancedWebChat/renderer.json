@@ -1,0 +1,18 @@
+{
+  "renderer" : {
+    "componentOverrides" : {
+      "$" : {
+        "definition" : "c/hcDirectoryResultsRenderer"
+      }
+    }
+  },
+  "collection" : {
+    "renderer" : {
+      "componentOverrides" : {
+        "$" : {
+          "definition" : "c/hcDirectoryResultsRenderer"
+        }
+      }
+    }
+  }
+}

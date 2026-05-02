@@ -1,0 +1,15 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "facilityListUi": {
+      "title": "Facility list result",
+      "description": "Structured output for Enhanced Web Chat: in Agent Builder bind Output rendering to HCFacilityListUi and enable Show in conversation. Payload: success, message, summaryText, rows.",
+      "lightning:type": "@apexClassType/c__HCFacilityListUiModel",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": true,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": true
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

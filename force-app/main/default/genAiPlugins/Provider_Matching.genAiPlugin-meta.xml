@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <canEscalate>false</canEscalate>
+    <description>User wants to see hospitals or clinics, cities we operate in, which sites offer a specialty, or wants to find doctors by specialty or department without scheduling yet. Includes “nearest” / area questions answered from facility names and directory data only.</description>
+    <developerName>Provider_Matching</developerName>
+    <genAiFunctions>
+        <functionName>HC_Find_Specialist</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Route_Symptom_To_Specialty</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Get_Facilities</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Log_Agent_Action</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Patient_Data_Actions</functionName>
+    </genAiFunctions>
+    <genAiPluginInstructions>
+        <description>Symptom routing: When user describes symptoms, call HC_Route_Symptom_To_Specialty first to get recommended specialty name, then call HC_Find_Specialist with that specialty plus city. Navigation/education only—not diagnosis. Do not use filler lines such as &quot;Here is your result&quot;—the tool output already appears as a formatted card in chat.</description>
+        <developerName>instruction_0a_1776616231029</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_0a_1776616231029</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>For &quot;find [specialty] in [city]&quot; or department-style requests, call HC Find Specialist with city keyword, specialty name, and a sensible max rows (for example 10).</description>
+        <developerName>instruction_1_1776616231029</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_1_1776616231029</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>For questions about what specialties exist in the network, call HC Patient Data Actions with operation = SPECIALTIES.</description>
+        <developerName>instruction_2_1776616231029</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_2_1776616231029</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>If no rows match, say so honestly and offer nearest alternatives or escalation.</description>
+        <developerName>instruction_3_1776616231029</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_3_1776616231029</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Prefer grounded tool output over guessing facility or doctor names.</description>
+        <developerName>instruction_4_1776616231029</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_4_1776616231029</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <language>en_US</language>
+    <localDeveloperName>Provider_Matching</localDeveloperName>
+    <masterLabel>Provider Matching</masterLabel>
+    <pluginType>Topic</pluginType>
+    <scope>Help users explore Onco Global’s facility network and provider directory. Provide lists and plain-text summaries from CRM. Do not book or cancel appointments here. Do not give clinical advice or diagnosis.</scope>
+</GenAiPlugin>

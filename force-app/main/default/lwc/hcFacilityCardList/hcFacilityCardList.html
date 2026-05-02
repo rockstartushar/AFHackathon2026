@@ -1,0 +1,32 @@
+<template>
+    <div class="hc-fac-wrap">
+        <template if:true={payloadObj}>
+            <template if:true={showError}>
+                <p class="hc-fac-error">{errorMessage}</p>
+            </template>
+            <template if:false={showError}>
+                <template if:true={hasRows}>
+                    <ul class="hc-fac-list">
+                        <template for:each={cards} for:item="card">
+                            <li key={card.key} class="hc-fac-card">
+                                <div class="hc-fac-card-title">{card.title}</div>
+                                <template if:true={card.subtitle}>
+                                    <div class="hc-fac-card-sub">{card.subtitle}</div>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template if:false={hasRows}>
+                    <p class="hc-fac-empty">No facilities matched.</p>
+                </template>
+            </template>
+        </template>
+        <template if:false={payloadObj}>
+            <lightning-card icon-name="standard:account" variant="base">
+                <p class="hc-fac-empty">Unable to display facility list.</p>
+            </lightning-card>
+            
+        </template>
+    </div>
+</template>

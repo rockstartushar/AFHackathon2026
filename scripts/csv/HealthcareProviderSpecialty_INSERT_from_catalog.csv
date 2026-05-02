@@ -1,0 +1,9 @@
+Name,PractitionerId,SpecialtyId,IsPrimarySpecialty,IsActive
+Med Onc — Arjun Mehta,003ak00001FtTTFAA3,0bcak0000002CUvAAM,true,true
+Rad Onc — Neha Sharma,003ak00001FtTTGAA3,0bcak0000002CUwAAM,true,true
+Surg Onc — Rahul Verma,003ak00001FtTTHAA3,0bcak0000002CUxAAM,true,true
+Hematology — Priya Kapoor,003ak00001FtTTIAA3,0bcak0000002CUyAAM,true,true
+Med Onc — Karan Sethi,003ak00001FtTTJAA3,0bcak0000002CUvAAM,true,true
+Rad Onc — Rakesh Iyer,003ak00001FtTTKAA3,0bcak0000002CUwAAM,true,true
+Med Onc — Sneha Nair,003ak00001FtTTLAA3,0bcak0000002CUvAAM,true,true
+Surg Onc — Vivek Rao,003ak00001FtTTMAA3,0bcak0000002CUxAAM,true,true

@@ -1,0 +1,5 @@
+{
+  "title" : "HC Booking Confirmation UI",
+  "description" : "Booking / reschedule / cancel confirmation card (payload JSON from HC_BookingActionsInvocable).",
+  "lightning:type" : "@apexClassType/c__HCBookingConfirmationUiModel"
+}

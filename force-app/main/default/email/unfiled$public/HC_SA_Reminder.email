@@ -1,0 +1,12 @@
+<html>
+<body style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#333;">
+<p>Hello {{{Recipient.FirstName}}},</p>
+<p>This is a friendly reminder that your visit is scheduled to begin at <strong>{{{ServiceAppointment.SchedStartTime}}}</strong>.</p>
+<p>
+<strong>End:</strong> {{{ServiceAppointment.SchedEndTime}}}<br/>
+<strong>Visit:</strong> {{{ServiceAppointment.Subject}}}
+</p>
+<p>Please arrive a few minutes early if your care team gave you special instructions.</p>
+<p>— Care team</p>
+</body>
+</html>

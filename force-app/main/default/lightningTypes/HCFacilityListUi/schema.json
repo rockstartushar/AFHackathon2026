@@ -1,0 +1,5 @@
+{
+  "title" : "HC Facility List UI",
+  "description" : "Payload JSON: success, message, summaryText, rows (HealthcareFacility list for Enhanced Web Chat).",
+  "lightning:type" : "@apexClassType/c__HCFacilityListUiModel"
+}

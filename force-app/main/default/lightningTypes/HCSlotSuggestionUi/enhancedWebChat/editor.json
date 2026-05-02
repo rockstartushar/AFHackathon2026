@@ -1,0 +1,18 @@
+{
+    "editor": {
+      "componentOverrides": {
+        "$": {
+          "definition": "c/hcSlotSuggestionRenderer"
+        }
+      }
+    },
+    "collection": {
+      "editor": {
+        "componentOverrides": {
+          "$": {
+            "definition": "c/hcSlotSuggestionRenderer"
+          }
+        }
+      }
+    }
+  }

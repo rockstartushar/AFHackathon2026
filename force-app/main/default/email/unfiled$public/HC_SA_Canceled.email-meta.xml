@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Patient notice when the Service Appointment is canceled.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>HC SA Appointment Canceled</name>
+    <relatedEntityType>ServiceAppointment</relatedEntityType>
+    <style>none</style>
+    <subject>Your visit was canceled</subject>
+    <textOnly>Your visit was canceled. Subject: {{{ServiceAppointment.Subject}}}</textOnly>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>

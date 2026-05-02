@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Read-only summaries and booking-session helpers: INSURANCE (plans on file), PREREQUISITES (documents before counselling), ROOM_RATES (non-binding daily rates), SPECIALTIES (catalog), BOOKING_SESSION (save rebook context). Does not schedule appointments — use HC Booking Actions for BOOK/MODIFY/CANCEL.</description>
+    <developerName>HC_Patient_Data_Actions</developerName>
+    <invocationTarget>HC_PatientDataActionsInvocable</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_Patient_Data_Actions</localDeveloperName>
+    <masterLabel>HC Patient Data Actions</masterLabel>
+    <progressIndicatorMessage>Checking your records…</progressIndicatorMessage>
+</GenAiFunction>

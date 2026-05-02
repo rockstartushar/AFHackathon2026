@@ -1,0 +1,21 @@
+{
+  "required" : [ "serviceAppointmentId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "correlationId" : {
+      "title" : "Correlation Id",
+      "description" : "Optional id for Agent_Action_Log / tracing.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "serviceAppointmentId" : {
+      "title" : "Service Appointment Id",
+      "description" : "Required: the ServiceAppointment Id returned from HC Booking Actions when operation BOOK succeeds (output field serviceAppointmentId). Do not pass Clinical Encounter Id, HealthcareFacility Id, Contact Id, or slot labels — only the new ServiceAppointment Id from BOOK.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

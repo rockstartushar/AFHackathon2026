@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Generates patient-facing coverage and preparation information using the HC_Coverage_Prep_Patient_Facing prompt template. Pass raw summary text from HC_Patient_Data_Actions as the template input. Returns formatted, conversational guidance with disclaimers.</description>
+    <developerName>HC_Coverage_Prep_Patient_Facing</developerName>
+    <invocationTarget>HC_Coverage_Prep_Patient_Facing</invocationTarget>
+    <invocationTargetType>generatePromptResponse</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_Coverage_Prep_Patient_Facing</localDeveloperName>
+    <masterLabel>HC Coverage Prep Patient Facing</masterLabel>
+    <progressIndicatorMessage>Preparing your summary…</progressIndicatorMessage>
+</GenAiFunction>

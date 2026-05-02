@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>After the patient is verified, lists their non-canceled visits (facility, start/end time, provider, ServiceAppointment Id). Use before MODIFY or CANCEL so the user can pick which appointment. Returns patientVisitListUi with summaryText and rows in payload.</description>
+    <developerName>HC_List_Patient_Visits</developerName>
+    <invocationTarget>HCPatientVisitListInvocable</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_List_Patient_Visits</localDeveloperName>
+    <masterLabel>HC List Patient Visits</masterLabel>
+    <progressIndicatorMessage>Loading your visits…</progressIndicatorMessage>
+</GenAiFunction>

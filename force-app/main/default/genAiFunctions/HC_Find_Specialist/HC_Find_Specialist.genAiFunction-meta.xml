@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Query the care network: list doctors and sites by city and/or specialty. Use for &quot;find a medical oncologist in Hyderabad&quot;, &quot;GYN oncology in Chennai&quot;, &quot;surgical oncologists in Bengaluru&quot;, or &quot;do you have X in [city]&quot;. Returns human-readable lines (provider, facility, specialty). Do not use for booking or canceling; use after the user names a city or specialty. If the user only needs a list of hospital sites by name, use HC_Get_Facilities_Chat (structured facilityListUi for Enhanced Chat).</description>
+    <developerName>HC_Find_Specialist</developerName>
+    <invocationTarget>HC_DirectoryInvocable</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_Find_Specialist</localDeveloperName>
+    <masterLabel>HC Find Specialist</masterLabel>
+    <progressIndicatorMessage>Searching our network…</progressIndicatorMessage>
+</GenAiFunction>

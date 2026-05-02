@@ -1,0 +1,27 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "cityKeyword" : {
+      "title" : "City keyword",
+      "description" : "Filters by HealthcareFacility.Name (contains match). Leave blank to search by specialty only or broaden results. ",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "specialtyName" : {
+      "title" : "Specialty name",
+      "description" : "Filters by Specialty.Name on active provider-specialty rows (e.g. medical oncology, gynecologic oncology). Leave blank for city-only listing.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "topN" : {
+      "title" : "Max rows",
+      "description" : "Maximum lines to return; capped at 25. Default 10 when null.",
+      "lightning:type" : "lightning__integerType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

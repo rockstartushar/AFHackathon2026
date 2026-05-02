@@ -1,0 +1,15 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "promptResponse": {
+      "title": "promptResponse",
+      "description": "Patient-facing formatted coverage and visit prep narrative with disclaimers.",
+      "lightning:type": "lightning__multilineTextType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": true,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": true
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

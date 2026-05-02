@@ -1,0 +1,18 @@
+{
+  "renderer" : {
+    "componentOverrides" : {
+      "$" : {
+        "definition" : "c/hcBookingConfirmationRenderer"
+      }
+    }
+  },
+  "collection" : {
+    "renderer" : {
+      "componentOverrides" : {
+        "$" : {
+          "definition" : "c/hcBookingConfirmationRenderer"
+        }
+      }
+    }
+  }
+}

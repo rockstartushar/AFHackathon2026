@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+
+  
+    <!-- Objects (Health Cloud + Custom) -->
+    <types>
+        <members>CareProvider</members>
+        <members>ClinicalEncounter</members>
+        <members>ClinicalEncounterProvider</members>
+        <members>HealthcareFacility</members>
+        <members>HealthcarePractitionerFacility</members>
+        <members>HealthcareProvider</members>
+        <members>HealthcareProviderSpecialty</members>
+        <members>HealthcareService</members>
+        <members>ServiceAppointment</members>
+        <members>ServiceResource</members>
+        <members>Account</members>
+        <members>Contact</members>
+        <members>Patient_Insurance__c</members>
+        <members>Counselling_Prerequisite__c</members>
+        <members>Facility_Room_Rate__c</members>
+        <members>Booking_Session__c</members>
+        <members>Agent_Action_Log__c</members>
+        <members>ClinicalEncounterFacility</members>
+        <members>CareProgramEnrollee</members>
+        <members>Knowledge__kav</members>
+        <name>CustomObject</name>
+    </types>
+
+    <!-- Page layouts (standard objects: geo & facility addressing) -->
+    <types>
+        <members>Account-Account Layout</members>
+        <members>Account-Onco Facility</members>
+        <members>Address-Address Layout</members>
+        <members>Contact-Contact Layout</members>
+        <members>HealthcareFacility-Healthcare Facility Layout</members>
+        <members>HealthcarePractitionerFacility-Healthcare Practitioner Facility Layout</members>
+        <members>HealthcareProvider-Healthcare Provider Layout</members>
+        <members>HealthcareProviderSpecialty-Healthcare Provider Specialty Layout</members>
+        <members>Location-Location Layout</members>
+        <members>PersonAccount-Person Account Layout</members>
+        <members>ServiceResource-Service Resource Layout</members>
+        <members>ServiceAppointment-Service Appointment Layout</members>
+        <members>ClinicalEncounter-Clinical Encounter Layout</members>
+        <members>ClinicalEncounterProvider-Clinical Encounter Provider Layout</members>
+        <members>Patient_Insurance__c-Patient Insurance Layout</members>
+        <members>Counselling_Prerequisite__c-Counselling Prerequisite Layout</members>
+        <members>Facility_Room_Rate__c-Facility Room Rate Layout</members>
+        <members>Booking_Session__c-Booking Session Layout</members>
+        <members>Agent_Action_Log__c-Agent Action Log Layout</members>
+        <members>ClinicalEncounterFacility-Clinical Encounter Facility Layout</members>
+        <members>CareProgramEnrollee-Care Program Enrollee Layout</members>
+        <members>Knowledge__kav-Knowledge Layout</members>
+        <name>Layout</name>
+    </types>
+
+    <!-- Account record types (business vs network branding) -->
+    <types>
+        <members>Account.Business_Account</members>
+        <members>Account.Onco_Facility</members>
+        <name>RecordType</name>
+    </types>
+
+    <!-- Assign to users who need hackathon data model (see permission set description) -->
+    <types>
+        <members>Hackathon_Agent_Runtime_Access</members>
+        <members>Hackathon_Data_Model_Access</members>
+        <name>PermissionSet</name>
+    </types>
+
+    <!-- Agent + booking Apex (invocable entry points + audit helper) -->
+    <types>
+        <members>HCAuditHelper</members>
+        <members>HCBookingConfirmationUiModel</members>
+        <members>HCCoveragePrepUiModel</members>
+        <members>HCCoveragePrepUiInvocable</members>
+        <members>HCFacilityListInvocable</members>
+        <members>HCPatientVisitListInvocable</members>
+        <members>HCPatientVisitListUiModel</members>
+        <members>HCFacilityListUiModel</members>
+        <members>HC_BookingActionsInvocable</members>
+        <members>HC_DirectoryInvocable</members>
+        <members>HCDirectoryUiModel</members>
+        <members>HC_PatientDataActionsInvocable</members>
+        <members>HC_ReminderInvocable</members>
+        <members>HC_SlotSuggestionInvocable</members>
+        <members>HCSlotSuggestionUiModel</members>
+        <name>ApexClass</name>
+    </types>
+
+    <version>66.0</version>
+</Package>

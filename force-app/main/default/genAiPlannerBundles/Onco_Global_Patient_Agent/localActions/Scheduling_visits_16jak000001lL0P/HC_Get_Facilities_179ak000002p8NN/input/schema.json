@@ -1,0 +1,13 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "input_CityKeyword": {
+      "title": "input_CityKeyword",
+      "description": "Filters HealthcareFacility.Name CONTAINS keyword; blank = first 25 alpha by name.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

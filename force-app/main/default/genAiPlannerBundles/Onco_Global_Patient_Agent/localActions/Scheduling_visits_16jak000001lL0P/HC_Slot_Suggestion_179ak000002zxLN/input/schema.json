@@ -1,0 +1,49 @@
+{
+  "required" : [ "healthcareFacilityId", "targetDate" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "healthcareFacilityId" : {
+      "title" : "Healthcare Facility Id",
+      "description" : "HealthcareFacility Id to search slots for.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "healthcareProviderId" : {
+      "title" : "Healthcare Provider Id",
+      "description" : "Optional HealthcareProvider Id to filter availability.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "targetDate" : {
+      "title" : "Target Date",
+      "description" : "Date to find slots for (YYYY-MM-DD).",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "slotDurationMinutes" : {
+      "title" : "Slot Duration Minutes",
+      "description" : "Length of each slot in minutes; default 30.",
+      "lightning:type" : "lightning__integerType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "maxSlots" : {
+      "title" : "Max Slots to Return",
+      "description" : "Maximum slots to return; default 10.",
+      "lightning:type" : "lightning__integerType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "correlationId" : {
+      "title" : "Correlation Id",
+      "description" : "Optional session or conversation id for tracing.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

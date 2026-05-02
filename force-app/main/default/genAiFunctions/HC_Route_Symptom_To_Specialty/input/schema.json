@@ -1,0 +1,21 @@
+{
+  "required": ["symptomText"],
+  "unevaluatedProperties": false,
+  "properties": {
+    "symptomText": {
+      "title": "symptomText",
+      "description": "Free-text symptom description from the patient (required).",
+      "lightning:type": "lightning__multilineTextType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "cityKeyword": {
+      "title": "cityKeyword",
+      "description": "Optional city for downstream directory lookup (e.g. Jaipur, Mumbai).",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

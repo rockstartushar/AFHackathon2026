@@ -1,0 +1,479 @@
+<template>
+    <lightning-card>
+        <div class="page-header">
+            <h1 class="page-title">Scheduling console</h1>
+            <p class="page-subtitle">
+                Look up patients, find care, check availability, and manage visits.
+            </p>
+        </div>
+
+        <lightning-tabset variant="scoped">
+            <lightning-tab label="Patient">
+                <div class="tab-body">
+                    <lightning-input
+                        class="slds-m-bottom_medium"
+                        label="Messaging session Id (optional)"
+                        value={messagingSessionIdForLink}
+                        onchange={handleMessagingSessionIdForLink}
+                        field-level-help="Paste the active Messaging Session Id to link End User Contact after phone match or guest create."
+                    ></lightning-input>
+                    <section class="console-section">
+                        <h2 class="console-section-title">Match by phone</h2>
+                        <div class="grid-2">
+                            <lightning-input
+                                label="Phone number"
+                                type="tel"
+                                value={resolvePhone}
+                                onchange={handleResolvePhone}
+                            ></lightning-input>
+                            <div class="actions-row">
+                                <lightning-button
+                                    label="Find patient"
+                                    variant="brand"
+                                    onclick={handleResolvePatient}
+                                ></lightning-button>
+                            </div>
+                        </div>
+                        <template if:true={patientResolveSummary}>
+                            <p class="pre-block">{patientResolveSummary}</p>
+                        </template>
+                    </section>
+
+                    <section class="console-section">
+                        <h2 class="console-section-title">New walk-in guest</h2>
+                        <lightning-input
+                            label="Full name"
+                            value={guestName}
+                            onchange={handleGuestName}
+                        ></lightning-input>
+                        <div class="grid-2 slds-m-top_small">
+                            <lightning-input
+                                label="Mobile"
+                                type="tel"
+                                value={guestMobile}
+                                onchange={handleGuestMobile}
+                            ></lightning-input>
+                            <lightning-input
+                                label="Email"
+                                type="email"
+                                value={guestEmail}
+                                onchange={handleGuestEmail}
+                            ></lightning-input>
+                        </div>
+                        <div class="actions-row">
+                            <lightning-button label="Create guest profile" onclick={handleCreateGuest}></lightning-button>
+                        </div>
+                        <template if:true={guestCreateSummary}>
+                            <p class="pre-block">{guestCreateSummary}</p>
+                        </template>
+                    </section>
+
+                    <section class="console-section">
+                        <h2 class="console-section-title">Who you are scheduling for</h2>
+                        <lightning-record-picker
+                            class="picker-tight"
+                            label="Patient"
+                            placeholder="Search person accounts…"
+                            object-api-name="Account"
+                            filter={patientAccountFilter}
+                            field-level-help="Only person accounts (patients), not business accounts."
+                            value={patientAccountId}
+                            onchange={handlePatientPickerChange}
+                        ></lightning-record-picker>
+                        <p class="page-subtitle slds-m-top_x-small">
+                            After a phone match or new guest, the patient is filled automatically. You can change it here anytime.
+                        </p>
+                    </section>
+                </div>
+            </lightning-tab>
+
+            <lightning-tab label="Find care">
+                <div class="tab-body">
+                    <section class="console-section">
+                        <h2 class="console-section-title">Sites near a city</h2>
+                        <div class="grid-2 grid-2-align-start">
+                            <lightning-input
+                                label="City or name contains"
+                                value={facilityKeyword}
+                                onchange={handleFacilityKeyword}
+                            ></lightning-input>
+                            <div class="actions-row">
+                                <lightning-button label="Search sites" onclick={handleLoadFacilities}></lightning-button>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <lightning-datatable
+                                key-field="facilityId"
+                                data={facilityRows}
+                                columns={facilityColumns}
+                                hide-checkbox-column
+                                max-row-selection="1"
+                                onrowselection={handleFacilityRowSelect}
+                            ></lightning-datatable>
+                        </div>
+                    </section>
+
+                    <section class="console-section">
+                        <h2 class="console-section-title">Specialists &amp; clinics</h2>
+                        <div class="grid-2">
+                            <lightning-input
+                                label="City or region"
+                                value={directoryCity}
+                                onchange={handleDirectoryCity}
+                            ></lightning-input>
+                            <lightning-input
+                                label="Specialty (e.g. medical oncology)"
+                                value={directorySpecialty}
+                                onchange={handleDirectorySpecialty}
+                            ></lightning-input>
+                        </div>
+                        <lightning-layout multiple-rows class="slds-m-top_small">
+                            <lightning-layout-item size="12" small-device-size="4" padding="horizontal-small">
+                                <lightning-input
+                                    type="number"
+                                    label="Max results"
+                                    value={directoryTopN}
+                                    onchange={handleDirectoryTopN}
+                                    min="1"
+                                    max="25"
+                                ></lightning-input>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" small-device-size="8" padding="horizontal-small">
+                                <div class="actions-row slds-p-top_medium">
+                                    <lightning-button label="Search directory" onclick={handleFindSpecialists}></lightning-button>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <div class="table-wrap">
+                            <lightning-datatable
+                                key-field="rowKey"
+                                data={directoryRows}
+                                columns={directoryColumns}
+                                hide-checkbox-column
+                                max-row-selection="1"
+                                onrowselection={handleDirectoryRowSelect}
+                            ></lightning-datatable>
+                        </div>
+                    </section>
+
+                    <section class="console-section">
+                        <h2 class="console-section-title">Symptom to specialty</h2>
+                        <lightning-textarea
+                            label="What the patient is experiencing"
+                            value={symptomText}
+                            onchange={handleSymptomText}
+                        ></lightning-textarea>
+                        <lightning-input
+                            class="slds-m-top_small"
+                            label="Preferred city or region"
+                            value={symptomCity}
+                            onchange={handleSymptomCity}
+                        ></lightning-input>
+                        <div class="actions-row">
+                            <lightning-button label="Suggest specialty" onclick={handleRouteSymptom}></lightning-button>
+                        </div>
+                        <template if:true={symptomSummary}>
+                            <p class="pre-block">{symptomSummary}</p>
+                        </template>
+                    </section>
+                </div>
+            </lightning-tab>
+
+            <lightning-tab label="Schedule">
+                <div class="tab-body">
+                    <div class="schedule-patient-banner">
+                        <p class="schedule-patient-banner__title">Patient for this session</p>
+                        <p class="schedule-patient-banner__body">{schedulePatientSummary}</p>
+                    </div>
+                    <section class="console-section">
+                        <h2 class="console-section-title">Availability</h2>
+                        <p class="page-subtitle slds-m-bottom_small">
+                            Open times skip visits already on the calendar at this site for that day. After a successful
+                            new booking, the list refreshes automatically when possible.
+                        </p>
+                        <lightning-record-picker
+                            class="picker-tight"
+                            label="Site (facility)"
+                            placeholder="Search healthcare facilities…"
+                            object-api-name="HealthcareFacility"
+                            value={healthcareFacilityId}
+                            onchange={handleFacilityPickerChange}
+                        ></lightning-record-picker>
+                        <lightning-record-picker
+                            class="picker-tight"
+                            label="Clinician (optional)"
+                            placeholder="Search active providers…"
+                            object-api-name="HealthcareProvider"
+                            filter={healthcareProviderFilter}
+                            field-level-help="Inactive providers are hidden."
+                            value={healthcareProviderId}
+                            onchange={handleProviderPickerChange}
+                        ></lightning-record-picker>
+                        <div class="slot-toolbar">
+                            <lightning-input
+                                type="date"
+                                label="Day to search"
+                                value={slotTargetDate}
+                                onchange={handleSlotTargetDate}
+                            ></lightning-input>
+                            <lightning-input
+                                type="number"
+                                label="Slot length (minutes)"
+                                value={slotDurationMinutes}
+                                onchange={handleSlotDurationMinutes}
+                                min="5"
+                                step="5"
+                            ></lightning-input>
+                            <lightning-input
+                                type="number"
+                                label="How many slots"
+                                value={slotMaxSlots}
+                                onchange={handleSlotMaxSlots}
+                                min="1"
+                                max="50"
+                            ></lightning-input>
+                            <lightning-button label="Show open times" variant="brand" onclick={handleGetSlots}></lightning-button>
+                        </div>
+                        <template if:true={slotsEmptyMessage}>
+                            <p class="pre-block slds-m-top_small">{slotsEmptyMessage}</p>
+                        </template>
+                        <template if:true={hasSlotChoices}>
+                            <p class="page-subtitle slds-m-top_small">Pick one open time (tabs). Start and end are fixed for that choice.</p>
+                            <div class="slot-tab-row" role="tablist" aria-label="Open times">
+                                <template for:each={slotTabsForUi} for:item="tab">
+                                    <button
+                                        type="button"
+                                        key={tab.slotKey}
+                                        class={tab.className}
+                                        data-slot-key={tab.slotKey}
+                                        role="tab"
+                                        aria-selected={tab.ariaSelected}
+                                        onclick={handleSlotTabClick}
+                                    >
+                                        {tab.tabLabel}
+                                    </button>
+                                </template>
+                            </div>
+                            <div class="slot-time-readonly grid-2" role="tabpanel">
+                                <lightning-input
+                                    label="Start"
+                                    value={selectedSlotStartDisplay}
+                                    readonly
+                                ></lightning-input>
+                                <lightning-input
+                                    label="End"
+                                    value={selectedSlotEndDisplay}
+                                    readonly
+                                ></lightning-input>
+                            </div>
+                        </template>
+                    </section>
+
+                    <section class="console-section">
+                        <h2 class="console-section-title">Book or change visit</h2>
+                        <lightning-combobox
+                            label="What do you want to do?"
+                            value={bookingOperation}
+                            options={bookingOperationOptions}
+                            onchange={handleBookingOperation}
+                        ></lightning-combobox>
+                        <template if:true={showModifyCancelVisitSection}>
+                            <div class="modify-cancel-visits slds-m-top_small">
+                                <p class="page-subtitle">
+                                    Visits for the selected patient, newest start time first. Filters use the site and clinician
+                                    from Availability above when set—leave clinician blank to see all doctors at the filtered
+                                    site.
+                                </p>
+                                <div class="actions-row slds-m-top_x-small">
+                                    <lightning-button
+                                        label="Refresh visit list"
+                                        onclick={handleRefreshModifyCancelVisits}
+                                        disabled={modifyCancelVisitLoading}
+                                    ></lightning-button>
+                                    <template if:true={modifyCancelVisitLoading}>
+                                        <lightning-spinner alternative-text="Loading visits" size="small"></lightning-spinner>
+                                    </template>
+                                </div>
+                                <template if:true={modifyCancelVisitEmptyHint}>
+                                    <p class="page-subtitle slds-m-top_small">{modifyCancelVisitEmptyHint}</p>
+                                </template>
+                                <div class="table-wrap slds-m-top_small">
+                                    <lightning-datatable
+                                        key-field="serviceAppointmentId"
+                                        data={modifyCancelVisitRows}
+                                        columns={modifyCancelVisitColumns}
+                                        max-row-selection="1"
+                                        onrowselection={handleModifyCancelVisitRowSelect}
+                                    ></lightning-datatable>
+                                </div>
+                                <p class="page-subtitle slds-m-top_small">
+                                    Select one row to fill start, end, and visit id for reschedule or cancel. Adjust times below
+                                    if you are rescheduling.
+                                </p>
+                            </div>
+                        </template>
+                        <template if:true={showEditableVisitTimes}>
+                            <div class="grid-2 slds-m-top_small">
+                                <lightning-input
+                                    type="datetime"
+                                    label="Start"
+                                    value={bookingStart}
+                                    onchange={handleBookingStart}
+                                ></lightning-input>
+                                <lightning-input
+                                    type="datetime"
+                                    label="End"
+                                    value={bookingEnd}
+                                    onchange={handleBookingEnd}
+                                ></lightning-input>
+                            </div>
+                        </template>
+                        <template if:true={showBookTimesFromSlotPicker}>
+                            <p class="page-subtitle slds-m-top_small">
+                                Visit time is the open time you selected under Availability (read-only there).
+                            </p>
+                        </template>
+                        <template if:true={showWorkTypeOptionalSection}>
+                            <div class="slds-m-top_small work-type-optional">
+                                <lightning-input
+                                    type="checkbox"
+                                    label="Set work type on this new visit"
+                                    checked={includeWorkTypeInBooking}
+                                    field-level-help="Turn on only if your org requires a Work Type on Service Appointment or booking validation fails without one."
+                                    onchange={handleIncludeWorkTypeChange}
+                                ></lightning-input>
+                                <template if:true={includeWorkTypeInBooking}>
+                                    <p class="page-subtitle slds-m-top_small help-work-type">
+                                        Pick the <strong>Work Type</strong> setup record that matches this visit (for example
+                                        the same type your site uses for a standard outpatient slot). It is stored on the
+                                        new service appointment. If you are unsure, ask your Salesforce or scheduling admin
+                                        which work type to use—this console does not require it unless your org does.
+                                    </p>
+                                    <lightning-record-picker
+                                        class="picker-tight slds-m-top_x-small"
+                                        label="Work type"
+                                        placeholder="Search active work types…"
+                                        object-api-name="WorkType"
+                                        filter={workTypeFilter}
+                                        field-level-help="Inactive work types are hidden."
+                                        value={bookingWorkTypeId}
+                                        onchange={handleWorkTypePickerChange}
+                                    ></lightning-record-picker>
+                                </template>
+                            </div>
+                        </template>
+                        <lightning-input
+                            class="slds-m-top_small"
+                            label="Visit subject (optional)"
+                            value={bookingSubject}
+                            onchange={handleBookingSubject}
+                        ></lightning-input>
+                        <lightning-input
+                            class="slds-m-top_small"
+                            label="Cancellation reason"
+                            value={bookingCancelReason}
+                            onchange={handleBookingCancelReason}
+                        ></lightning-input>
+                        <div class="actions-row">
+                            <lightning-button label="Submit" variant="brand" onclick={handleRunBooking}></lightning-button>
+                        </div>
+                        <template if:true={bookingSummary}>
+                            <p class="pre-block">{bookingSummary}</p>
+                        </template>
+                    </section>
+                </div>
+            </lightning-tab>
+
+            <lightning-tab label="Records">
+                <div class="tab-body">
+                    <section class="console-section">
+                        <h2 class="console-section-title">Patient context</h2>
+                        <lightning-combobox
+                            label="What to load"
+                            value={patientDataOperation}
+                            options={patientDataOptions}
+                            onchange={handlePatientDataOperation}
+                        ></lightning-combobox>
+                        <lightning-record-picker
+                            class="picker-tight slds-m-top_small"
+                            label="Visit (for visit checklist)"
+                            placeholder="Search service appointments…"
+                            object-api-name="ServiceAppointment"
+                            filter={serviceAppointmentFilter}
+                            field-level-help="Canceled hidden; if a patient is selected for this session, results are limited to visits parented by that person account."
+                            value={serviceAppointmentId}
+                            onchange={handleServiceAppointmentPickerChange}
+                        ></lightning-record-picker>
+                        <lightning-record-picker
+                            class="picker-tight"
+                            label="Site (for room rates)"
+                            placeholder="Search healthcare facilities…"
+                            object-api-name="HealthcareFacility"
+                            value={healthcareFacilityId}
+                            onchange={handleFacilityPickerChange}
+                        ></lightning-record-picker>
+                        <lightning-combobox
+                            class="slds-m-top_small"
+                            label="Room category (room rates)"
+                            value={pdRoomType}
+                            options={roomTypeOptions}
+                            onchange={handlePdRoomType}
+                        ></lightning-combobox>
+                        <div class="actions-row">
+                            <lightning-button label="Load" onclick={handlePatientData}></lightning-button>
+                        </div>
+                        <template if:true={patientDataSummary}>
+                            <p class="pre-block">{patientDataSummary}</p>
+                        </template>
+                    </section>
+                </div>
+            </lightning-tab>
+
+            <lightning-tab label="Session">
+                <div class="tab-body">
+                    <section class="console-section">
+                        <h2 class="console-section-title">Activity log</h2>
+                        <lightning-input
+                            label="Action"
+                            value={logActionName}
+                            onchange={handleLogActionName}
+                        ></lightning-input>
+                        <div class="grid-2 slds-m-top_small">
+                            <lightning-input label="Outcome" value={logStatus} onchange={handleLogStatus}></lightning-input>
+                            <lightning-input label="Error detail" value={logError} onchange={handleLogError}></lightning-input>
+                        </div>
+                        <lightning-textarea
+                            class="slds-m-top_small"
+                            label="Notes (no sensitive data)"
+                            value={logInputSummary}
+                            onchange={handleLogInputSummary}
+                        ></lightning-textarea>
+                        <div class="actions-row">
+                            <lightning-button label="Write log entry" onclick={handleLogAgentAction}></lightning-button>
+                        </div>
+                    </section>
+
+                    <section class="console-section">
+                        <h2 class="console-section-title">Staff reminder</h2>
+                        <lightning-record-picker
+                            class="picker-tight"
+                            label="Visit"
+                            placeholder="Search service appointments…"
+                            object-api-name="ServiceAppointment"
+                            filter={serviceAppointmentFilter}
+                            field-level-help="Canceled hidden; when a patient is selected, only their visits."
+                            value={serviceAppointmentId}
+                            onchange={handleServiceAppointmentPickerChange}
+                        ></lightning-record-picker>
+                        <div class="actions-row">
+                            <lightning-button label="Create reminder task" onclick={handleCreateReminder}></lightning-button>
+                        </div>
+                        <template if:true={reminderSummary}>
+                            <p class="pre-block">{reminderSummary}</p>
+                        </template>
+                    </section>
+                </div>
+            </lightning-tab>
+        </lightning-tabset>
+    </lightning-card>
+</template>

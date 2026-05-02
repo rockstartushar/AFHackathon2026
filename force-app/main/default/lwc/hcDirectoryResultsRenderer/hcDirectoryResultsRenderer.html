@@ -1,0 +1,22 @@
+<template>
+    <div class="hc-dir-wrap">
+        <template if:true={payloadObj}>
+            <template if:true={hasRows}>
+                <ul class="hc-dir-list">
+                    <template for:each={cards} for:item="card">
+                        <li key={card.key} class="hc-dir-card" tabindex="0">
+                            <div class="hc-dir-card-title">{card.title}</div>
+                            <div class="hc-dir-card-sub">{card.subtitle}</div>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+            <template if:false={hasRows}>
+                <p class="hc-dir-empty">No providers matched.</p>
+            </template>
+        </template>
+        <template if:false={payloadObj}>
+            <p class="hc-dir-empty">Unable to display directory results.</p>
+        </template>
+    </div>
+</template>

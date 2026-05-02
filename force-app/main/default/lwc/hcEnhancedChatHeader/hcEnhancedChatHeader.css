@@ -1,0 +1,81 @@
+.hc-ech-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 3rem;
+    padding: 0.5rem 0.65rem 0.5rem 0.85rem;
+    background: linear-gradient(135deg, #032d60 0%, #014486 100%);
+    color: #ffffff;
+    font-family: var(--lwc-fontFamily, 'Salesforce Sans', Arial, sans-serif);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.hc-ech-brand {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+}
+
+.hc-ech-logo {
+    display: block;
+    max-height: 2rem;
+    width: auto;
+    max-width: min(11rem, 100%);
+    object-fit: contain;
+    object-position: left center;
+}
+
+.hc-ech-title {
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hc-ech-actions {
+    display: flex;
+    gap: 0.2rem;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.hc-ech-btn {
+    width: 2.125rem;
+    height: 2.125rem;
+    border: none;
+    border-radius: 0.35rem;
+    background: transparent;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+
+.hc-ech-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    font-weight: 300;
+}
+
+.hc-ech-btn-min .hc-ech-icon {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.hc-ech-btn-close .hc-ech-icon {
+    font-size: 1.35rem;
+    font-weight: 300;
+}
+
+.hc-ech-btn:hover,
+.hc-ech-btn:focus {
+    background: rgba(255, 255, 255, 0.14);
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 1px;
+}

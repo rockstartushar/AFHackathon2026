@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Patient confirmation when a Service Appointment is created (booked).</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>HC SA Appointment Confirmed</name>
+    <relatedEntityType>ServiceAppointment</relatedEntityType>
+    <style>none</style>
+    <subject>Your visit is confirmed</subject>
+    <textOnly>Your visit is confirmed. Subject: {{{ServiceAppointment.Subject}}}</textOnly>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>

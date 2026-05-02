@@ -1,0 +1,12 @@
+<html>
+<body style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#333;">
+<p>Hello {{{Recipient.FirstName}}},</p>
+<p>Your visit time has been <strong>updated</strong>. Here are the new details:</p>
+<p>
+<strong>When:</strong> {{{ServiceAppointment.SchedStartTime}}} – {{{ServiceAppointment.SchedEndTime}}}<br/>
+<strong>Visit:</strong> {{{ServiceAppointment.Subject}}}
+</p>
+<p>If this change is unexpected, please contact us right away.</p>
+<p>— Care team</p>
+</body>
+</html>

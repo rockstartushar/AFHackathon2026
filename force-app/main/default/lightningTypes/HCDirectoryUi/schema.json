@@ -1,0 +1,5 @@
+{
+  "title" : "HC Directory Results UI",
+  "description" : "Provider/facility rows for Enhanced Web Chat (payload JSON from HC_DirectoryInvocable).",
+  "lightning:type" : "@apexClassType/c__HCDirectoryUiModel"
+}

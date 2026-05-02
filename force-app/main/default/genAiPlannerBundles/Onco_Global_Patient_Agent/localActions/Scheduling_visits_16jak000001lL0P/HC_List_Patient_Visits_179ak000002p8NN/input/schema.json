@@ -1,0 +1,28 @@
+{
+  "required" : [ "patientAccountId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "patientAccountId" : {
+      "title" : "Patient Account Id",
+      "description" : "Person Account Id from HC_Resolve_Patient_By_Phone or HC_Create_Guest_Person_Account.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "healthcareFacilityId" : {
+      "title" : "Healthcare Facility Id",
+      "description" : "Optional: only visits at this facility.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "healthcareProviderId" : {
+      "title" : "Healthcare Provider Id",
+      "description" : "Optional: only visits with this provider.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

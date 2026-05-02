@@ -1,0 +1,139 @@
+DATA MODEL — Agentforce Healthcare Hackathon
+
+This document lists what is standard (already in Salesforce / Health Cloud with your licenses) versus what you still create or configure. It matches the epics: directory search, booking, agent, web, reminders, stretch.
+
+
+================================================================================
+LEGEND
+================================================================================
+
+Standard     = Object ships with Salesforce or Health Cloud; you configure, seed data, and use in Flows. No new object needed.
+Custom       = You create the object or field (or choose Platform Event instead of a custom object).
+Config only  = No new table; use Setup (Agent, Messaging, Experience Cloud, Data Cloud, email templates).
+
+
+================================================================================
+STANDARD OBJECTS — USE AS-IS (ALREADY IN YOUR REPO METADATA)
+================================================================================
+
+Network directory and specialties
+• HealthcareFacility          Where care is delivered (sites, hospitals, clinics).
+• HealthcareProvider          Provider profile; links to practitioner identity (Contact / Account per your org).
+• HealthcarePractitionerFacility   Many-to-many: which providers practice at which facilities.
+• HealthcareProviderSpecialty      Provider’s specialties; lookup SpecialtyId → standard Specialty (care specialty catalog).
+• Contact                     Practitioner person record when model uses Contact (HealthcareProvider.PractitionerId).
+
+Patient and programs (optional demo)
+• Account                     Often Person Accounts for patients; confirm your org’s patient model.
+• CareProgramEnrollee         Enrollee in a care program (optional epic seed).
+• CareProgram                 Parent program (standard object; add to manifest if you customize or reference in flows).
+
+Booking and clinical visit (canonical pattern)
+• ServiceAppointment          Scheduling record (Field Service / core scheduling); link from ClinicalEncounter.ServiceAppointmentId.
+• ClinicalEncounter           Visit/encounter; PatientId, FacilityId, StartDate, EndDate, Status, ServiceAppointmentId.
+• ClinicalEncounterProvider   Attending provider on encounter; PractitionerId, ClinicalEncounterId, StartDate, EndDate.
+• ClinicalEncounterFacility   Optional extra facility detail on encounter (in your manifest).
+
+Knowledge
+• Knowledge__kav              Knowledge articles (Knowledge Article Version) for agent and search.
+
+Other standard objects you may turn on for scheduling (in hackathon-retrieve.xml)
+• OperatingHours
+• ServiceResource
+
+
+================================================================================
+RELATIONSHIP OVERVIEW (LOGICAL)
+================================================================================
+
+Directory
+  HealthcareFacility  ← HealthcarePractitionerFacility →  HealthcareProvider
+  HealthcareProvider  → Contact (PractitionerId) [when used]
+  HealthcareProvider  ← HealthcareProviderSpecialty → Specialty (standard catalog)
+
+Booking (your documented pattern)
+  ServiceAppointment        (slot / work order style appointment)
+       ↓ lookup
+  ClinicalEncounter         (PatientId, FacilityId, times, Status, ServiceAppointmentId)
+       ↓ child
+  ClinicalEncounterProvider (ClinicalEncounterId, PractitionerId, times)
+
+Patient identity
+  Use your org’s patient record (commonly Person Account or Account + Contact). Flows take Patient Id or verified phone → resolve to that record before creating ClinicalEncounter.
+
+
+================================================================================
+CUSTOM — RECOMMENDED FOR THIS IMPLEMENTATION
+================================================================================
+
+Agent action audit (Epic 2.5)
+• Custom object (example name): Agent_Action_Log__c
+  Suggested fields (all custom):
+  - Action_Name__c          Text
+  - Correlation_Id__c       Text (optional; group one conversation)
+  - Status__c                 Picklist: Success, Failed
+  - Error_Message__c          Long Text Area (optional)
+  - Input_Summary__c          Long Text Area (optional; avoid full PHI)
+  - Related_Encounter__c      Lookup ClinicalEncounter (optional)
+  - Related_Service_Appointment__c  Lookup ServiceAppointment (optional)
+
+  Alternative: Platform Event Agent_Action_Log__e + optional subscriber Flow to persist — no custom object UI, harder to show judges in a list view.
+
+Seed / integration stability (Epic 1.1)
+• Custom fields (External Id, Text) on HealthcareFacility, HealthcareProvider, or a small staging approach — only if you need upsert from scripts. Not required if you use deterministic Names and delete/recreate in scratch orgs.
+
+Department filter (Epic 2.3) — pick one approach
+• Preferred standard: filter using Specialty names / SpecialtyId via HealthcareProviderSpecialty (no custom object).
+• If you need “Department” separate from catalog specialty:
+  - Option A: Custom picklist on HealthcareProviderSpecialty, e.g. Department__c
+  - Option B: Custom metadata type rows for Department → list of Specialty Ids (no patient data)
+  - Option C: Extra text field on HealthcareProviderSpecialty for department grouping
+
+Reschedule analytics (Epic 5.2 stretch)
+• Often implemented without new objects: Data Cloud ingests ServiceAppointment / ClinicalEncounter and computes metrics in the lake.
+• Optional custom field on Account (patient), e.g. Reschedule_Count__c (rollup or Flow-maintained) only if you want a simple on-org flag for the agent without Data Cloud.
+
+
+================================================================================
+NOT DATA MODEL (SETUP / METADATA ONLY)
+================================================================================
+
+• Flows (autolaunched, invocable): HC_Get_Facilities, HC_Get_Specialties, HC_Find_Specialist, HC_Book_Appointment, HC_Modify_Appointment, HC_Cancel_Appointment, HC_Reminder_Before_Visit
+• Einstein / Agentforce agent, topics, actions
+• Experience Cloud site, guest profile, Lightning pages
+• Messaging channels (Web, WhatsApp)
+• Scheduled paths on ServiceAppointment or ClinicalEncounter
+• Email templates, org-wide email
+• Data Cloud: data streams, data model objects, segments (configuration in Data Cloud UI)
+
+
+================================================================================
+OBJECTS IN REPO THAT ARE NOT PART OF THE HACKATHON MODEL
+================================================================================
+
+Your project also contains unrelated custom objects from samples or tools, for example:
+• Test_Drive__c, BenefitManagementRecertification__c, xDO_Tool_ProcessAutomationSwitch__c, QLabs__mdt, xDO_Base_QBrix_Register__mdt
+
+Do not use these for the healthcare demo unless you explicitly choose to; they are not required by the epic data model.
+
+
+================================================================================
+MINIMUM CUSTOM FOOTPRINT SUMMARY
+================================================================================
+
+Must create for full epic scope as designed:
+• Agent_Action_Log__c (or Platform Event equivalent) for judge-visible action logging.
+
+Strongly recommended for clean seeding:
+• One External Id (or equivalent) strategy on key standard objects OR documented wipe-and-load.
+
+Optional:
+• Department__c or metadata mapping (Epic 2.3) if Specialty alone is not enough
+• Patient-side Reschedule_Count__c or similar (Epic 5.2) if not using only Data Cloud
+
+Everything else can stay on standard Health Cloud + scheduling + Knowledge + Person Account (or your patient model).
+
+
+================================================================================
+END
+================================================================================

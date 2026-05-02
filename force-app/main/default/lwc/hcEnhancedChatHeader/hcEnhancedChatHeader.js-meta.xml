@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>HC Enhanced Web Chat Header</masterLabel>
+    <description>Onco Global branded header for Enhanced Web Chat v2. Select under Embedded Service → Custom UI Components → Web (v2) → Header.</description>
+    <targets>
+        <target>lightningSnapin__MessagingHeader</target>
+    </targets>
+</LightningComponentBundle>

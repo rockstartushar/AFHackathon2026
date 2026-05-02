@@ -1,0 +1,26 @@
+<template>
+    <div class="hc-cov-wrap">
+        <template if:true={payloadObj}>
+            <template if:true={hasSections}>
+                <div class="hc-cov-list">
+                    <template for:each={sections} for:item="sec">
+                        <section key={sec.key} class="hc-cov-block">
+                            <h3 class="hc-cov-title">{sec.title}</h3>
+                            <ul class="hc-cov-ul">
+                                <template for:each={sec.items} for:item="item">
+                                    <li key={item.key} class="hc-cov-li">{item.text}</li>
+                                </template>
+                            </ul>
+                        </section>
+                    </template>
+                </div>
+            </template>
+            <template if:false={hasSections}>
+                <p class="hc-cov-empty">No preparation topics.</p>
+            </template>
+        </template>
+        <template if:false={payloadObj}>
+            <p class="hc-cov-empty">Unable to display visit preparation.</p>
+        </template>
+    </div>
+</template>

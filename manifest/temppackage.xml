@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <!-- Agent + booking Apex (invocable entry points + audit helper) -->
+    <types>
+        <members>HC_Chats_Routed_to_Agents_and_Queues</members>
+        <name>Flow</name>
+    </types>
+
+    <version>66.0</version>
+</Package>

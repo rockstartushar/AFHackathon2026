@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Creates an internal Task reminder on the patient account for a ServiceAppointment. Call only after HC Booking Actions BOOK succeeds; pass the BOOK output serviceAppointmentId (not Clinical Encounter or facility Ids). Not an SMS/email send.</description>
+    <developerName>HC_Create_Visit_Reminder_Task</developerName>
+    <invocationTarget>HC_ReminderInvocable</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_Create_Visit_Reminder_Task</localDeveloperName>
+    <masterLabel>HC Create Visit Reminder Task</masterLabel>
+    <progressIndicatorMessage>Setting a reminder…</progressIndicatorMessage>
+</GenAiFunction>

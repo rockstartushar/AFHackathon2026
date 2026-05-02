@@ -1,0 +1,9 @@
+<html>
+<body style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#333;">
+<p>Hello {{{Recipient.FirstName}}},</p>
+<p>Your visit has been <strong>canceled</strong>.</p>
+<p><strong>Visit:</strong> {{{ServiceAppointment.Subject}}}</p>
+<p>If you did not request this or want to book another time, please contact us.</p>
+<p>— Care team</p>
+</body>
+</html>

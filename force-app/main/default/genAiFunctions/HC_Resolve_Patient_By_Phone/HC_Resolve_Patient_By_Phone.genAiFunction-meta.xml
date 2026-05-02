@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Resolves Person Account by PersonMobilePhone (exact match). If multiple patients share the same phone, first returned row wins—normalize phones in data for production.</description>
+    <developerName>HC_Resolve_Patient_By_Phone</developerName>
+    <invocationTarget>HC_Resolve_Patient_By_Phone</invocationTarget>
+    <invocationTargetType>flow</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_Resolve_Patient_By_Phone</localDeveloperName>
+    <masterLabel>HC Resolve Patient By Phone</masterLabel>
+    <progressIndicatorMessage>Verifying your profile…</progressIndicatorMessage>
+</GenAiFunction>

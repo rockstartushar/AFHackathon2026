@@ -1,0 +1,18 @@
+{
+  "renderer" : {
+    "componentOverrides" : {
+      "$" : {
+        "definition" : "c/hcFacilityCardList"
+      }
+    }
+  },
+  "collection" : {
+    "renderer" : {
+      "componentOverrides" : {
+        "$" : {
+          "definition" : "c/hcFacilityCardList"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "input_MessagingSessionId" : {
+      "title" : "input_MessagingSessionId",
+      "description" : "Optional MessagingSession Id; when set, links EndUserContactId after account create or match.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "patient_full_name" : {
+      "title" : "patient_full_name",
+      "description" : "Guest patient full name for Person Account.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : true,
+      "copilotAction:isUserInput" : false
+    },
+    "PersonMobilePhone" : {
+      "title" : "PersonMobilePhone",
+      "description" : "Mobile phone; normalized in Flow for dedupe.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : true,
+      "copilotAction:isUserInput" : false
+    },
+    "PersonEmail" : {
+      "title" : "PersonEmail",
+      "description" : "Email address for the guest Person Account.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : true,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

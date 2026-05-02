@@ -1,0 +1,27 @@
+<template>
+    <lightning-card title="Conversation summary" icon-name="utility:quick_text">
+        <div class="slds-p-horizontal_small slds-p-bottom_small">
+            <p class="slds-text-color_weak slds-m-bottom_x-small summary-intro">
+                Short AI handoff for the live agent (intent, facts, bot actions, suggested next step).
+            </p>
+            <lightning-button
+                variant="brand"
+                label="Refresh summary"
+                onclick={handleRefresh}
+                disabled={loading}
+            ></lightning-button>
+            <template if:true={loading}>
+                <lightning-spinner alternative-text="Loading" size="small" class="slds-m-left_small"></lightning-spinner>
+            </template>
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-m-top_small">{error}</div>
+            </template>
+            <template if:true={hasSummary}>
+                <div class="summary-body slds-m-top_small">{summaryText}</div>
+            </template>
+            <template if:true={showHint}>
+                <p class="slds-text-color_weak slds-m-top_x-small">{hint}</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

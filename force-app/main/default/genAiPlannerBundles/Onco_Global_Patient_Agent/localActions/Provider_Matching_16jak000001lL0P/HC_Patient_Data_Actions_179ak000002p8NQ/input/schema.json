@@ -1,0 +1,77 @@
+{
+  "required" : [ "operation" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "contextToken" : {
+      "title" : "Context Token",
+      "description" : "BOOKING_SESSION: opaque resume token for anonymous web flows; never put PHI in text fields.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "correlationId" : {
+      "title" : "Correlation Id",
+      "description" : "Optional tracing id aligned with Agent_Action_Log__c.Correlation_Id__c.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "healthcareFacilityId" : {
+      "title" : "Healthcare Facility Id",
+      "description" : "Required for ROOM_RATES — reference rates for this HealthcareFacility.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "lastClinicalEncounterId" : {
+      "title" : "Last Clinical Encounter Id",
+      "description" : "BOOKING_SESSION: optional link to last ClinicalEncounter.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "lastServiceAppointmentId" : {
+      "title" : "Last Service Appointment Id",
+      "description" : "BOOKING_SESSION: link to last ServiceAppointment for context.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "operation" : {
+      "title" : "Operation",
+      "description" : "INSURANCE = Patient_Insurance__c lines for patientAccountId. PREREQUISITES = Counselling_Prerequisite__c for serviceAppointmentId. ROOM_RATES = Facility_Room_Rate__c for healthcareFacilityId (optional roomTypeApi: General, ICU, Private, Semi_Private). SPECIALTIES = catalog text of active specialties. BOOKING_SESSION = upsert Booking_Session__c for returning-patient context. Uppercase.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "patientAccountId" : {
+      "title" : "Patient Account Id",
+      "description" : "Required for INSURANCE and BOOKING_SESSION; Person Account Id.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "preferredFacilityId" : {
+      "title" : "Preferred Facility Id",
+      "description" : "BOOKING_SESSION: default facility for rebook flows.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "roomTypeApi" : {
+      "title" : "Room Type API",
+      "description" : "ROOM_RATES only: filter by Facility_Room_Rate__c.Room_Type__c API value.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "serviceAppointmentId" : {
+      "title" : "Service Appointment Id",
+      "description" : "Required for PREREQUISITES — counselling checklist rows linked to this ServiceAppointment.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

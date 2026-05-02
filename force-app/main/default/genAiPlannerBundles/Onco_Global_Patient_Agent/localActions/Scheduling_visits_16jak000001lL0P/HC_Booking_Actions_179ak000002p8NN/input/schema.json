@@ -1,0 +1,112 @@
+{
+  "required" : [ "operation" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "cancellationReason" : {
+      "title" : "Cancellation Reason",
+      "description" : "Picklist/API reason for CANCEL when your org captures it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "clinicalEncounterStatus" : {
+      "title" : "CE Status API",
+      "description" : "Override ClinicalEncounter Status for BOOK; default Scheduled.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "correlationId" : {
+      "title" : "Correlation Id",
+      "description" : "Session or conversation id for Agent_Action_Log / tracing; optional but recommended.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "healthcareFacilityId" : {
+      "title" : "Healthcare Facility Id",
+      "description" : "HealthcareFacility Id for BOOK. MODIFY/CANCEL infer facility from existing SA.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "healthcareProviderId" : {
+      "title" : "Healthcare Provider Id",
+      "description" : "Optional HealthcareProvider Id when patient names a doctor for BOOK.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "operation" : {
+      "title" : "Operation",
+      "description" : "BOOK = create ServiceAppointment + ClinicalEncounter (+ provider when set). MODIFY = reschedule existing SA (needs serviceAppointmentId). CANCEL = cancel SA/encounter (needs serviceAppointmentId). Uppercase.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "parentRecordId" : {
+      "title" : "Parent Record Id",
+      "description" : "Often required on ServiceAppointment for BOOK (org-specific parent work object).",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "patientAccountId" : {
+      "title" : "Patient Account Id",
+      "description" : "Person Account Id after verification. Required for BOOK, MODIFY, and CANCEL.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "schedEndOrNewEnd" : {
+      "title" : "Sched End / New End",
+      "description" : "Appointment end (BOOK) or new end time (MODIFY).",
+      "lightning:type" : "lightning__dateTimeStringType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "schedStartOrNewStart" : {
+      "title" : "Sched Start / New Start",
+      "description" : "Appointment start (BOOK) or new start time (MODIFY). Use patient-local intent; stored as Datetime.",
+      "lightning:type" : "lightning__dateTimeStringType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "serviceAppointmentId" : {
+      "title" : "Service Appointment Id",
+      "description" : "Existing ServiceAppointment Id for MODIFY or CANCEL.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "serviceAppointmentStatus" : {
+      "title" : "SA Status API",
+      "description" : "Override ServiceAppointment Status API value for BOOK; default Scheduled.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "serviceAppointmentStatusCategory" : {
+      "title" : "SA StatusCategory API",
+      "description" : "Optional StatusCategory when your org requires it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "subject" : {
+      "title" : "Subject",
+      "description" : "Optional short subject on the ServiceAppointment for BOOK.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "workTypeId" : {
+      "title" : "Work Type Id",
+      "description" : "Optional WorkType Id for BOOK when the org ties visit length to work type.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

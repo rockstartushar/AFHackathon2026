@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+
+    <!-- All five Enhanced Chat v2 surfaces: directory, facility list, slot, booking, coverage prep -->
+    <types>
+        <members>HCBookingConfirmationUiModel</members>
+        <members>HCCoveragePrepUiInvocable</members>
+        <members>HCCoveragePrepUiModel</members>
+        <members>HC_DirectoryInvocable</members>
+        <members>HCDirectoryUiModel</members>
+        <members>HCFacilityListInvocable</members>
+        <members>HCPatientVisitListInvocable</members>
+        <members>HCPatientVisitListUiModel</members>
+        <members>HCFacilityListUiModel</members>
+        <members>HC_SlotSuggestionInvocable</members>
+        <members>HCSlotSuggestionUiModel</members>
+        <members>HC_BookingActionsInvocable</members>
+        <members>HC_SchedulingConsoleController</members>
+        <members>HC_SchedulingConsoleControllerTest</members>
+        <members>HC_MessagingSessionSummaryController</members>
+        <members>HC_MessagingSessionContactLink</members>
+        <name>ApexClass</name>
+    </types>
+
+    <types>
+        <members>HC_ApiSessionId</members>
+        <name>ApexPage</name>
+    </types>
+
+    <types>
+        <members>hcBookingConfirmationRenderer</members>
+        <members>hcCoveragePrepAccordion</members>
+        <members>hcDirectoryResultsRenderer</members>
+        <members>hcFacilityCardList</members>
+        <members>hcSlotSuggestionRenderer</members>
+        <members>hcEnhancedChatHeader</members>
+        <members>hcSchedulingConsole</members>
+        <members>hcMessagingSessionHandoffSummary</members>
+        <name>LightningComponentBundle</name>
+    </types>
+
+    <types>
+        <members>HCBookingConfirmationUi</members>
+        <members>HCCoveragePrepUi</members>
+        <members>HCDirectoryUi</members>
+        <members>HCFacilityListUi</members>
+        <members>HCSlotSuggestionUi</members>
+        <name>LightningTypeBundle</name>
+    </types>
+
+    <types>
+        <members>unfiled$public/HC_SA_Canceled</members>
+        <members>unfiled$public/HC_SA_Confirmation</members>
+        <members>unfiled$public/HC_SA_Reminder</members>
+        <members>unfiled$public/HC_SA_Updated</members>
+        <name>EmailTemplate</name>
+    </types>
+
+    <types>
+        <members>HC_SA_Patient_Appointment_Emails</members>
+        <name>Flow</name>
+    </types>
+
+    <types>
+        <members>HC_Booking_Actions</members>
+        <members>HC_Coverage_Prep_UI</members>
+        <members>HC_Find_Specialist</members>
+        <members>HC_Get_Facilities</members>
+        <members>HC_Get_Facilities_Chat</members>
+        <members>HC_List_Patient_Visits</members>
+        <members>HC_Slot_Suggestion</members>
+        <name>GenAiFunction</name>
+    </types>
+
+    <version>66.0</version>
+</Package>

@@ -1,0 +1,5 @@
+{
+  "title" : "HC Coverage Prep UI",
+  "description" : "Visit preparation checklist sections (payload JSON from HCCoveragePrepUiInvocable).",
+  "lightning:type" : "@apexClassType/c__HCCoveragePrepUiModel"
+}

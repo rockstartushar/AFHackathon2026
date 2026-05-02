@@ -1,0 +1,15 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "patientVisitListUi": {
+      "title": "Patient visit list",
+      "description": "Parse payload for success, message, summaryText, and rows (serviceAppointmentId, facilityName, times, clinicianName).",
+      "lightning:type": "@apexClassType/c__HCPatientVisitListUiModel",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": true,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": true
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

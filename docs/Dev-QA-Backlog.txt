@@ -1,0 +1,254 @@
+DEV & QA BACKLOG — Agentforce Healthcare Hackathon
+
+Org checked: Salesforce CLI alias afhack2026 (EPIC OrgFarm), 2026-04-11
+Repo: AFHackathon2026 (force-app/main/default)
+
+================================================================================
+EPIC 1 — PLATFORM FOUNDATION & DATA
+================================================================================
+
+US-1.1 — Seed hospitals and providers
+As a developer, I need seed data for 10+ hospitals and many providers with relationships, so that demos and the agent never return empty lists.
+
+Acceptance criteria
+• At least 10 HealthcareFacility records with distinct names and cities.
+• At least 25 HealthcareProvider records (or team minimum), with HealthcarePractitionerFacility links.
+• HealthcareProviderSpecialty (or equivalent) populated so search by city and specialty returns results.
+• Contact records linked to practitioners where the org model requires it.
+• Optional: CareProgram and CareProgramEnrollee for demo patients.
+• Loader is repeatable (External Id or documented full refresh).
+
+Dev tasks
+• Confirm required fields on HealthcareFacility, HealthcareProvider, HealthcarePractitionerFacility, HealthcareProviderSpecialty, and Contact.
+• Build seed dataset and loader (for example scripts/apex/seed_Healthcare_Network.apex or CSV plus import order).
+• Document how to run the loader in a scratch org or shared org.
+
+QA tasks
+• Run the loader and verify counts with SOQL (facilities, providers, links, specialties).
+• After seed: at least 10 facilities, 25+ providers, at least one provider on two or more facilities.
+• Run a search-style SOQL for one seeded city and specialty; expect at least one row.
+
+
+US-1.2 — Single booking pattern documented
+As a developer, I need one documented booking pattern, so that everyone implements the same create, update, and cancel path.
+
+Acceptance criteria
+• One canonical document (for example docs/BOOKING_PATTERN.md) describes: ServiceAppointment then ClinicalEncounter (Patient, Facility, Start, End, Status) then ClinicalEncounterProvider with PractitionerId equal to the chosen doctor.
+• Cancel behavior documented: encounter status and optional ServiceAppointment cancel.
+• Field mapping from ServiceAppointment to ClinicalEncounter is listed.
+• Failure and duplicate-submit behavior is briefly stated.
+
+Dev tasks
+• Write the booking pattern document and link it from README or the team wiki.
+• Peer review so object and field API names match the org.
+
+QA tasks
+• Confirm the document is linked and readable without asking the team for extra rules.
+• Use the document to derive expected behavior for book, modify, and cancel tests later.
+
+
+================================================================================
+EPIC 2 — AGENTFORCE DIGITAL FRONT DOOR
+================================================================================
+
+US-2.1 — Answers about specialties and locations without calling
+As a patient, I want answers about specialties and locations without calling, so that I can learn what you offer and where you are.
+
+Acceptance criteria
+• Agent topics cover specialties, locations, and common location questions.
+• Knowledge articles (or equivalent) match seeded facility and specialty data.
+• Optional flows HC_Get_Facilities and HC_Get_Specialties return lists from SOQL on Health Cloud objects.
+• Responses do not expose other patients’ personal information.
+
+Dev tasks
+• Configure agent topics and instructions in Setup.
+• Author or import Knowledge articles aligned with seed data.
+• Optionally build and expose HC_Get_Facilities and HC_Get_Specialties.
+
+QA tasks
+• Ask the agent for locations; answers match seeded cities and facilities.
+• Ask for specialties; answers match seeded data.
+• Confirm no unrelated patient PII appears in replies.
+
+
+US-2.2 — Find a specialist by city and specialty
+As a patient, I want to find a specialist by city and specialty, so that I can choose a doctor and site.
+
+Acceptance criteria
+• Invocable automation (for example flow HC_Find_Specialist) accepts city, specialty (name or Id), and optional top N (default 5).
+• Queries HealthcarePractitionerFacility with HealthcareProvider, HealthcareFacility, and specialty data.
+• Returns a short human-readable summary for the agent or channel.
+• Empty result returns a clear message, not a technical error.
+
+Dev tasks
+• Build HC_Find_Specialist with inputs and plain-text or structured output.
+• Register as an agent action if the team uses Agentforce actions.
+
+QA tasks
+• Invoke with a known seeded city and specialty; results are readable and capped at N.
+• Invoke with a nonsense city; user-safe empty message, no fault.
+
+
+US-2.3 — Browse by department (for example gynecology)
+As a patient, I want to browse by department, so that I can explore care without knowing exact specialty wording.
+
+Acceptance criteria
+• Same flow as US-2.2 extended with a department or specialty filter (HealthcareProviderSpecialty or a picklist if added).
+• Seeded values exist for demo departments.
+• Agent instructions map common phrases to the filter where practical.
+
+Dev tasks
+• Add department or specialty filter input to HC_Find_Specialist or document a second entry point.
+• Seed department values if using a custom picklist.
+
+QA tasks
+• Filter by one department returns only matching providers.
+• City plus department together still returns correct results.
+
+
+US-2.4 — Book, modify, and cancel without an agent
+As a patient, I want to book, modify, and cancel through automation without talking to an agent, so that I can self-serve.
+
+Acceptance criteria
+• Three invocable paths: HC_Book_Appointment, HC_Modify_Appointment, HC_Cancel_Appointment following US-1.2.
+• Inputs include patient Id or verified phone, facility, optional doctor, and slot (start and end or equivalent).
+• Validation for patient exists, slot in future, and doctor at facility when doctor is provided.
+• Clear errors when validation fails; behavior for partial failure matches the booking document.
+
+Dev tasks
+• Implement the three flows and shared validation (subflow or repeated elements).
+• Provide a way to test without the agent (Flow debug, quick action, or API as agreed).
+
+QA tasks
+• Book: one ServiceAppointment, one ClinicalEncounter, one ClinicalEncounterProvider when doctor is set.
+• Modify: times update; links stay correct.
+• Cancel: statuses match US-1.2; bad phone and past slot produce clear errors without broken half-records per team rules.
+
+
+US-2.5 — Judges see Agentforce driving actions
+As a hackathon judge, I need to see Agentforce driving actions, not only chat, so that platform value is obvious.
+
+Acceptance criteria
+• Agent action calls are logged (custom object such as Agent_Action_Log__c or a platform event) with action name, status, time, and optional correlation Id.
+• Demo script shows before and after record Ids for at least one happy path.
+• At least one narrative: user intent to topic or action to flow to updated records.
+
+Dev tasks
+• Create logging object or event and a small subflow to write a row on each agent-exposed action.
+• Write a one-page demo script for judges.
+
+QA tasks
+• Successful action creates a log row; failed validation logs an error row.
+• Demo script matches records in the org.
+
+
+================================================================================
+EPIC 3 — WEB CHANNEL
+================================================================================
+
+US-3.1 — Browser access to the agent
+As a patient, I want to use a browser to talk to the agent, so that I can get help from any device.
+
+Acceptance criteria
+• Experience Cloud site (or agreed web surface) is available.
+• Einstein Agent component or Messaging for Web is embedded and works for the demo user or guest as designed.
+• Retrieve and deploy steps for ExperienceBundle or DigitalExperienceBundle are documented once the manifest is correct.
+• Guest or community profile can run the agent and any invocable flows used on the page.
+
+Dev tasks
+• Create or configure the Experience Cloud site.
+• Add the agent or messaging component to a page; set guest permissions.
+• Fix manifest and document retrieve and deploy commands in README.
+
+QA tasks
+• Site URL loads without errors.
+• Chat opens and one test question returns a valid answer.
+• Deploy from the repo using the documented steps succeeds.
+
+
+================================================================================
+EPIC 4 — REMINDERS AND NO-SHOWS
+================================================================================
+
+US-4.1 — Reminder before the visit
+As a patient, I want a reminder before my visit, so that I am less likely to miss the appointment.
+
+Acceptance criteria
+• Scheduled path or time-based automation on ServiceAppointment or ClinicalEncounter runs before the visit (team defines hours offset).
+• MVP sends email (or in-org notification) with date, time, and facility; patient-safe wording.
+• Stretch: Digital Engagement template documented if not in MVP.
+• Demo data includes an appointment inside the demo window for judges.
+
+Dev tasks
+• Build scheduled path and reminder flow (for example HC_Reminder_Before_Visit) or inline send email.
+• Create email template; configure org-wide email if needed.
+• Seed or adjust one appointment for the demo time range.
+
+QA tasks
+• Confirm the path runs for a test record (debug or shortened timer in sandbox).
+• Email received with correct time and facility.
+
+
+================================================================================
+EPIC 5 — STRETCH: WHATSAPP AND DATA CLOUD
+================================================================================
+
+US-5.1 — Same flows on WhatsApp
+As a patient, I want the same booking and discovery flows on WhatsApp, so that channel matches web behavior.
+
+Acceptance criteria
+• Messaging WhatsApp channel connected; agent or bot routes to the same invocable flows as Epic 2.
+• Documented limitation list (for example rich components) and workaround text.
+• One end-to-end demo path on WhatsApp (find doctor then book).
+
+Dev tasks
+• Connect WhatsApp in the demo org and map intents to HC_Find_Specialist and booking flows.
+• Write a short limitations and workarounds note for the team and judges.
+
+QA tasks
+• Repeat a happy path for find specialist and book on WhatsApp; compare to web or flow-only results.
+
+
+US-5.2 — Engagement insight (Data Cloud)
+As Onco Global, we want insight on engagement, so that we can identify patients who reschedule often.
+
+Acceptance criteria
+• Data Cloud ingests Service Appointments and/or Clinical Encounters (patient key, reschedule count or events you can derive).
+• Segment definition: high reschedule count with a documented threshold.
+• Optional: formula field or flow input so the agent can confirm harder for that segment; behavior described and shown once in demo.
+
+Dev tasks
+• Configure ingestion and the high-reschedule segment; document threshold and fields.
+• If built, connect segment or flag to agent instructions or a flow input.
+
+QA tasks
+• Segment counts align with the rule when checked against source data or a report.
+• If confirm-harder is built, a test member in the segment sees the stricter behavior.
+
+
+================================================================================
+REFERENCE — SUGGESTED FLOW API NAMES
+================================================================================
+
+HC_Get_Facilities — list facilities (SOQL)
+HC_Get_Specialties — list specialties
+HC_Find_Specialist — city, specialty, optional department, top N
+HC_Book_Appointment — book per booking pattern document
+HC_Modify_Appointment — reschedule
+HC_Cancel_Appointment — cancel
+HC_Reminder_Before_Visit — reminder send (scheduled path)
+
+
+================================================================================
+REFERENCE — RE-CHECK ORG (CLI)
+================================================================================
+
+sf data query -o afhack2026 -q "SELECT COUNT(Id) cnt FROM HealthcareFacility"
+sf data query -o afhack2026 -q "SELECT COUNT(Id) cnt FROM HealthcareProvider"
+sf org list metadata -o afhack2026 -m Flow --json
+
+Use a different alias if your shared org is not afhack2026.
+
+================================================================================
+END
+================================================================================

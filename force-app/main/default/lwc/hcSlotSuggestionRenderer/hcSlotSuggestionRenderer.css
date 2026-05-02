@@ -1,0 +1,55 @@
+.hc-slot-wrap {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    padding: 0.25rem 0;
+}
+
+.hc-slot-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
+.hc-slot-title {
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.hc-slot-date {
+    color: var(--slds-g-color-neutral-base-30, #706e6b);
+    font-size: 0.8125rem;
+}
+
+.hc-slot-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.hc-slot-item {
+    border: 1px solid var(--slds-g-color-border-base-1, #dddbda);
+    border-radius: 999px;
+    padding: 0.45rem 0.85rem;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.hc-slot-item:hover,
+.hc-slot-item:focus {
+    border-color: var(--slds-g-color-border-brand-1, #1b96ff);
+    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    box-shadow: 0 2px 4px rgba(3, 45, 96, 0.1);
+    outline: none;
+}
+
+.hc-slot-empty {
+    margin: 0.25rem 0 0;
+    color: var(--slds-g-color-neutral-base-30, #706e6b);
+}

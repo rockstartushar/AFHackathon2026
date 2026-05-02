@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <canEscalate>false</canEscalate>
+    <description>User asks about insurance on file, documents needed before counselling, approximate room rates, or returning / “book similar” using past visit context.</description>
+    <developerName>Coverage_prep</developerName>
+    <genAiFunctions>
+        <functionName>HC_Log_Agent_Action</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Patient_Data_Actions</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Coverage_Prep_Patient_Facing</functionName>
+    </genAiFunctions>
+    <genAiPluginInstructions>
+        <description>Insurance: HC Patient Data Actions, operation = INSURANCE, pass patientAccountId after verification if needed.</description>
+        <developerName>instruction_0_1776607261975</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_0_1776607261975</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Coverage prep workflow: Call HC_Patient_Data_Actions with INSURANCE, PREREQUISITES, or ROOM_RATES operations first to get raw summary. Then pass that plain-text summary into HC_Coverage_Prep_Patient_Facing prompt action as RawSummaryFromTool input. Do not invent facts; disclaimers are in template.</description>
+        <developerName>instruction_0_coverage_prep</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_0_coverage_prep</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Prerequisites: operation = PREREQUISITES, pass serviceAppointmentId for the counselling appointment.</description>
+        <developerName>instruction_1_1776607261975</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_1_1776607261975</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Room rates: operation = ROOM_RATES, pass healthcareFacilityId; optional roomTypeApi for ICU vs Private etc. Always state rates are illustrative, not a quote.</description>
+        <developerName>instruction_2_1776607261975</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_2_1776607261975</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Rebook context: operation = BOOKING_SESSION for storing or recalling last facility / context token per patient; combine with directory/scheduling subagents for actual new bookings.</description>
+        <developerName>instruction_3_1776607261975</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_3_1776607261975</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Context / resume tokens: Use only opaque, non-clinical values your automation expects (e.g. a short session key). Do not ask patients to dictate diagnoses, detailed clinical notes, or sensitive identifiers into chat to fill “token” or memo-like fields.</description>
+        <developerName>instruction_4_1776607261975</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_4_1776607261975</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <language>en_US</language>
+    <localDeveloperName>Coverage_prep</localDeveloperName>
+    <masterLabel>Coverage &amp; prep</masterLabel>
+    <pluginType>Topic</pluginType>
+    <scope>Read summaries from CRM for coverage and prep; room rates are non-binding information only. Booking-session updates support returning patients—not clinical notes.</scope>
+</GenAiPlugin>

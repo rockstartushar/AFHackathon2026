@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Recommended_Specialty__c</fullName>
+    <description>Must align with Specialty.Name or substring used in HC_DirectoryInvocable (e.g. Medical Oncology).</description>
+    <externalId>false</externalId>
+    <label>Recommended Specialty</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,26 @@
+<template>
+    <div class="hc-book-wrap">
+        <template if:true={payloadObj}>
+            <div class={successClass}>
+                <div class="hc-book-headline">{headline}</div>
+                <template if:false={success}>
+                    <p class="hc-book-msg">{detailMessage}</p>
+                </template>
+                <template if:true={success}>
+                    <template if:true={showFacilityLine}>
+                        <p class="hc-book-line"><span class="hc-book-k">Site</span> {facilityName}</p>
+                    </template>
+                    <template if:true={showSchedule}>
+                        <p class="hc-book-line"><span class="hc-book-k">When</span> {schedLabel}</p>
+                    </template>
+                    <template if:true={showSubject}>
+                        <p class="hc-book-line"><span class="hc-book-k">Visit</span> {subject}</p>
+                    </template>
+                </template>
+            </div>
+        </template>
+        <template if:false={payloadObj}>
+            <p class="hc-book-empty">Unable to display booking details.</p>
+        </template>
+    </div>
+</template>

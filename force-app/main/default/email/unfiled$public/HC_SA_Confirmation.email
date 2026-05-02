@@ -1,0 +1,12 @@
+<html>
+<body style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#333;">
+<p>Hello {{{Recipient.FirstName}}},</p>
+<p>Your visit has been <strong>confirmed</strong>.</p>
+<p>
+<strong>When:</strong> {{{ServiceAppointment.SchedStartTime}}} – {{{ServiceAppointment.SchedEndTime}}}<br/>
+<strong>Visit:</strong> {{{ServiceAppointment.Subject}}}
+</p>
+<p>If you need to change or cancel this appointment, contact us using the same channel you used to book.</p>
+<p>— Care team</p>
+</body>
+</html>

@@ -1,0 +1,38 @@
+.hc-cov-wrap {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    padding: 0.25rem 0;
+}
+
+.hc-cov-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.hc-cov-block {
+    border: 1px solid var(--slds-g-color-border-base-1, #dddbda);
+    border-radius: 0.35rem;
+    padding: 0.55rem 0.65rem;
+    background: var(--slds-g-color-neutral-base-100, #fafaf9);
+}
+
+.hc-cov-title {
+    margin: 0 0 0.35rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.hc-cov-ul {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.hc-cov-li {
+    margin: 0.2rem 0;
+}
+
+.hc-cov-empty {
+    margin: 0;
+    color: var(--slds-g-color-neutral-base-30, #706e6b);
+}

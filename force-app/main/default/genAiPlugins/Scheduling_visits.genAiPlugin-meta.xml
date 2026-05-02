@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <canEscalate>false</canEscalate>
+    <description>User wants to book, reschedule, or cancel an appointment, or asks about availability, wait times, or capacity; or has provided a phone number to verify identity for scheduling. For booking: collect site or facility (or city), target date, optional doctor or specialty—then show slots from tools; the slot list is the time offer. Do not require a separate &quot;time&quot; before slots are shown.</description>
+    <developerName>Scheduling_visits</developerName>
+    <genAiFunctions>
+        <functionName>HC_Booking_Actions</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Create_Visit_Reminder_Task</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Log_Agent_Action</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Resolve_Patient_By_Phone</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Create_Guest_Person_Account</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Slot_Suggestion</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_Get_Facilities_Chat</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>HC_List_Patient_Visits</functionName>
+    </genAiFunctions>
+    <genAiPluginInstructions>
+        <description>Scheduling intake (mandatory): After the patient is verified, do NOT ask for a clock time (e.g. 3:00 PM) before calling HC_Slot_Suggestion. Do NOT use combined prompts like &quot;date, time, and location&quot; or &quot;what date and time&quot;—the slot list supplies concrete times. Collect only: location (hospital/site or city—use HC_Get_Facilities_Chat if needed), target date (or day), and optional doctor or specialty. Then call HC_Slot_Suggestion and present slots; the user picks one slot—that choice IS the appointment time for BOOK. Optional broad preference (morning vs afternoon) may narrow interpretation only after slots exist or alongside slot picking—not as a substitute for showing slots. Do not book without valid patientAccountId.</description>
+        <developerName>instruction_0a_1776607041902</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_0a_1776607041902</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Guest identification: Ask if returning patient. RETURNING: get mobile and call HC_Resolve_Patient_By_Phone (pass input_MessagingSessionId when supported). Single match: use patientAccountId. Multiple matches: hand off. NEW: collect full name, mobile, email then call HC_Create_Guest_Person_Account (same input when supported). Use returned Id when status is CREATED_NEW or MATCHED_EXISTING.</description>
+        <developerName>instruction_0_1776607041902</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_0_1776607041902</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>BOOK: Use HC Booking Actions with operation = BOOK and patientAccountId from resolution, plus facility, start/end datetimes from the user&apos;s chosen slot (HC_Slot_Suggestion), optional provider. If booking fails (e.g. capacity), explain safely and offer alternatives.</description>
+        <developerName>instruction_1_1776607041903</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_1_1776607041903</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>MODIFY / CANCEL: After you have patientAccountId, call HC_List_Patient_Visits and show the list (each line: facility, start/end time, provider if any, and ServiceAppointment Id). Ask the user which visit to change or cancel. Only after they choose, call HC_Booking_Actions with operation MODIFY or CANCEL using that serviceAppointmentId. For MODIFY, then collect a new target date, call HC_Slot_Suggestion, let the user pick a slot, and pass the slot start/end into MODIFY—do not ask for a free-text time before slots exist.</description>
+        <developerName>instruction_2_1776607041903</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_2_1776607041903</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Capacity: If asked how busy a day is, explain that daily limits may exist and offer to try booking a specific slot; do not fabricate exact remaining counts unless a tool returns them.</description>
+        <developerName>instruction_3_1776607041903</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_3_1776607041903</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Reminder Task: Optionally call HC Create Visit Reminder Task after a successful BOOK with the new ServiceAppointment Id.</description>
+        <developerName>instruction_4_1776607041903</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_4_1776607041903</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Logging: Call HC Log Agent Action on important failures or after successful booking if your demo requires a visible audit row.</description>
+        <developerName>instruction_5_1776607041903</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_5_1776607041903</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Do not provide medical advice or interpret symptoms.</description>
+        <developerName>instruction_6_1776607041903</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_6_1776607041903</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <language>en_US</language>
+    <localDeveloperName>Scheduling_visits</localDeveloperName>
+    <masterLabel>Scheduling &amp; visits</masterLabel>
+    <pluginType>Topic</pluginType>
+    <scope>Handle verified scheduling using approved Salesforce actions only. Do not prompt for &quot;date, time, and location&quot; as one step before HC_Slot_Suggestion—collect facility/site (or city), date, optional doctor or specialty, call HC_Slot_Suggestion, then the user picks a slot (that supplies the time). Never invent datetimes—use start/end from the chosen slot only.</scope>
+</GenAiPlugin>

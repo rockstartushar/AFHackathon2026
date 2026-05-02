@@ -1,0 +1,45 @@
+.hc-book-wrap {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    padding: 0.25rem 0;
+}
+
+.hc-book-card {
+    border-radius: 0.35rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--slds-g-color-border-base-1, #dddbda);
+}
+
+.hc-book-ok {
+    background: var(--slds-g-color-success-container-1, #ecfdf3);
+    border-color: var(--slds-g-color-border-success-1, #45c65a);
+}
+
+.hc-book-err {
+    background: var(--slds-g-color-error-container-1, #fef1ee);
+    border-color: var(--slds-g-color-border-error-1, #ea001e);
+}
+
+.hc-book-headline {
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.hc-book-msg {
+    margin: 0.25rem 0 0;
+}
+
+.hc-book-line {
+    margin: 0.35rem 0 0;
+}
+
+.hc-book-k {
+    color: var(--slds-g-color-neutral-base-30, #706e6b);
+    font-size: 0.8125rem;
+    margin-right: 0.25rem;
+}
+
+.hc-book-empty {
+    margin: 0;
+    color: var(--slds-g-color-neutral-base-30, #706e6b);
+}

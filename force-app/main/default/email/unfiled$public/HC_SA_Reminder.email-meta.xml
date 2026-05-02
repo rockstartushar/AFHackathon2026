@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Reminder email sent one hour before scheduled start (scheduled path).</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>HC SA Appointment Reminder</name>
+    <relatedEntityType>ServiceAppointment</relatedEntityType>
+    <style>none</style>
+    <subject>Reminder: your visit is coming up</subject>
+    <textOnly>Reminder: your visit starts soon. Subject: {{{ServiceAppointment.Subject}}}</textOnly>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>

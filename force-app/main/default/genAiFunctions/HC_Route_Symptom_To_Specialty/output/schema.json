@@ -1,0 +1,60 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "recommendedSpecialty": {
+      "title": "recommendedSpecialty",
+      "description": "Specialty label for HC Find Specialist (e.g. Medical Oncology).",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": true
+    },
+    "routingSummary": {
+      "title": "routingSummary",
+      "description": "Short non-clinical explanation for the patient.",
+      "lightning:type": "lightning__multilineTextType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": true
+    },
+    "disclaimer": {
+      "title": "disclaimer",
+      "description": "Safe disclaimer; not medical advice or emergency triage.",
+      "lightning:type": "lightning__multilineTextType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": true
+    },
+    "matchFound": {
+      "title": "matchFound",
+      "description": "True if a catalog match was found.",
+      "lightning:type": "lightning__booleanType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": false
+    },
+    "cityKeyword": {
+      "title": "cityKeyword",
+      "description": "Echo of input city for directory lookup.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": false
+    },
+    "symptomRoutingUi": {
+      "title": "symptomRoutingUi",
+      "description": "Rich card for Enhanced Web Chat: specialty, guidance text, and disclaimer in one layout.",
+      "lightning:type": "@apexClassType/c__HCSymptomRoutingUiModel",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": true,
+      "copilotAction:isUsedByPlanner": false,
+      "copilotAction:useHydratedPrompt": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

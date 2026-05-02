@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <!-- GenAiPlannerBundle: omit if org returns UNKNOWN_EXCEPTION for HC_Slot_Suggestion schema; retrieve after re-adding that action in Builder. -->
+    <!--
+    <types>
+        <members>Onco_Global_Patient_Agent</members>
+        <name>GenAiPlannerBundle</name>
+    </types>
+    -->
+    <types>
+        <members>HC_Booking_Actions</members>
+        <members>HC_Coverage_Prep_UI</members>
+        <members>HC_Find_Specialist</members>
+        <members>HC_Get_Facilities</members>
+        <!-- HC_Slot_Suggestion: omit from bulk retrieve if org errors; retrieve alone after deploy fixes schemas. -->
+        <name>GenAiFunction</name>
+    </types>
+    <types>
+        <members>Provider_Matching</members>
+        <members>Scheduling_visits</members>
+        <members>Coverage_prep</members>
+        <members>Visit_information_FAQ</members>
+        <name>GenAiPlugin</name>
+    </types>
+    <types>
+        <members>HCBookingConfirmationUi</members>
+        <members>HCCoveragePrepUi</members>
+        <members>HCDirectoryUi</members>
+        <members>HCFacilityListUi</members>
+        <members>HCSlotSuggestionUi</members>
+        <name>LightningTypeBundle</name>
+    </types>
+    <types>
+        <members>hcBookingConfirmationRenderer</members>
+        <members>hcCoveragePrepAccordion</members>
+        <members>hcDirectoryResultsRenderer</members>
+        <members>hcEnhancedChatHeader</members>
+        <members>hcFacilityCardList</members>
+        <members>hcSlotSuggestionRenderer</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <version>66.0</version>
+</Package>

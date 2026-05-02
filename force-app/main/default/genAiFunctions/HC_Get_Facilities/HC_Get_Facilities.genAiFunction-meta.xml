@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Lists HealthcareFacility sites (max 25) via Apex HCFacilityListInvocable (same as HC_Get_Facilities_Chat). Prefer GenAi action HC_Get_Facilities_Chat for Agentforce / Enhanced Web Chat naming clarity; keep this API name for existing org references. The standalone HC_Get_Facilities Flow remains for non-agent Flow-only callers.</description>
+    <developerName>HC_Get_Facilities</developerName>
+    <invocationTarget>HCFacilityListInvocable</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>HC_Get_Facilities</localDeveloperName>
+    <masterLabel>HC Get Facilities</masterLabel>
+    <progressIndicatorMessage>Looking up hospitals…</progressIndicatorMessage>
+</GenAiFunction>

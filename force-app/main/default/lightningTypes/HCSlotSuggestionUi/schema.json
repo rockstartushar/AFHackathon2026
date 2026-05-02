@@ -1,0 +1,5 @@
+{
+  "title" : "HC Slot Suggestion UI",
+  "description" : "Structured appointment slot payload for Enhanced Web Chat (payload JSON from HC_SlotSuggestionInvocable).",
+  "lightning:type" : "@apexClassType/c__HCSlotSuggestionUiModel"
+}
