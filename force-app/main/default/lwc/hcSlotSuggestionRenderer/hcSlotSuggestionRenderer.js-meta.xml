@@ -6,15 +6,9 @@
     <targets>
         <target>lightning__AgentforceOutput</target>
         <target>lightning__RecordPage</target>
-        <target>lightning__AgentforceInput</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__AgentforceOutput">
-            <sourceType name="c__HCFacilityListUi" />
-        </targetConfig>
-    </targetConfigs>
-    <targetConfigs>
-        <targetConfig targets="lightning__AgentforceInput">
             <sourceType name="c__HCFacilityListUi" />
         </targetConfig>
     </targetConfigs>

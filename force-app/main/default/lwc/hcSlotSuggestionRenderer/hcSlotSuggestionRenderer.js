@@ -67,35 +67,6 @@ export default class HcSlotSuggestionRenderer extends LightningElement {
         }));
     }
 
-    handleSlotClick(event) {
-        // Prevent interaction if the component is already in readOnly mode
-        if (this._readOnly) return;
-
-        const selectedSlot = event.currentTarget.dataset.value;
-        
-        // 1. Set local state to readOnly to prevent multiple clicks
-        this._readOnly = true;
-        this._internalValue = selectedSlot;
-
-        // 2. Sync the specific value back to the Agent's variable memory
-        this.dispatchEvent(new CustomEvent('valuechange', {
-            detail: {
-                value: selectedSlot 
-            },
-            bubbles: true,
-            composed: true
-        }));
-        
-        // 3. Signal that the user has made a selection to trigger the next response
-        this.dispatchEvent(new CustomEvent('select', {
-            detail: {
-                value: selectedSlot 
-            },
-            bubbles: true,
-            composed: true
-        }));
-    }
-
     get hasSlots() {
         return this.slotRows.length > 0;
     }
