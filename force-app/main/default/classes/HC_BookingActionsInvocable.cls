@@ -208,20 +208,22 @@ public without sharing class HC_BookingActionsInvocable {
                 if (hp.PractitionerId == null) {
                     throw new IllegalArgumentException('HealthcareProvider has no PractitionerId.');
                 }
-                if (!isAcceptablePractitionerLookup(hp.PractitionerId)) {
-                    throw new IllegalArgumentException(
-                        'Provider data issue: HealthcareProvider.PractitionerId must reference the same object type as ClinicalEncounterProvider.PractitionerId (typically Practitioner). It currently points to ' +
-                        String.valueOf(hp.PractitionerId.getSobjectType()) +
-                        '. Update the Healthcare Provider record in Setup or re-run seed data.'
-                    );
+                Id practitionerForCep = hp.PractitionerId;
+                if (!isAcceptablePractitionerLookup(practitionerForCep)) {
+                    if (practitionerForCep.getSobjectType() == Contact.SObjectType) {
+                        practitionerForCep = tryResolvePractitionerIdFromContact(practitionerForCep);
+                    }
                 }
-                ClinicalEncounterProvider cep = new ClinicalEncounterProvider();
-                cep.ClinicalEncounterId = ce.Id;
-                cep.PractitionerId = hp.PractitionerId;
-                cep.StartDate = req.schedStartOrNewStart;
-                cep.EndDate = req.schedEndOrNewEnd;
-                insert cep;
-                cepId = cep.Id;
+                if (practitionerForCep != null && isAcceptablePractitionerLookup(practitionerForCep)) {
+                    ClinicalEncounterProvider cep = new ClinicalEncounterProvider();
+                    cep.ClinicalEncounterId = ce.Id;
+                    cep.PractitionerId = practitionerForCep;
+                    cep.StartDate = req.schedStartOrNewStart;
+                    cep.EndDate = req.schedEndOrNewEnd;
+                    insert cep;
+                    cepId = cep.Id;
+                }
+                // When HP points at Contact but CEP only allows Practitioner and no Practitioner row exists, still book SA+CE (provider link skipped).
             }
 
             res.success = true;
@@ -273,7 +275,7 @@ public without sharing class HC_BookingActionsInvocable {
                 throw new IllegalArgumentException('End time must be after start time.');
             }
             ServiceAppointment sa = [
-                SELECT Id, ContactId
+                SELECT Id, ContactId, ParentRecordId
                 FROM ServiceAppointment
                 WHERE Id = :req.serviceAppointmentId
                 LIMIT 1
@@ -285,9 +287,7 @@ public without sharing class HC_BookingActionsInvocable {
                     LIMIT 1
                 ]
                 .PersonContactId;
-            if (contactId == null || sa.ContactId != contactId) {
-                throw new IllegalArgumentException('Appointment does not belong to the given patient.');
-            }
+            assertPatientOwnsServiceAppointment(sa, req.patientAccountId, contactId);
             sa.SchedStartTime = req.schedStartOrNewStart;
             sa.SchedEndTime = req.schedEndOrNewEnd;
             update sa;
@@ -395,7 +395,7 @@ public without sharing class HC_BookingActionsInvocable {
                 throw new IllegalArgumentException('serviceAppointmentId and patientAccountId are required for CANCEL.');
             }
             ServiceAppointment sa = [
-                SELECT Id, ContactId
+                SELECT Id, ContactId, ParentRecordId
                 FROM ServiceAppointment
                 WHERE Id = :req.serviceAppointmentId
                 LIMIT 1
@@ -407,9 +407,7 @@ public without sharing class HC_BookingActionsInvocable {
                 LIMIT 1
             ]
             .PersonContactId;
-            if (contactId == null || sa.ContactId != contactId) {
-                throw new IllegalArgumentException('Appointment does not belong to the given patient.');
-            }
+            assertPatientOwnsServiceAppointment(sa, req.patientAccountId, contactId);
             sa.Status = DEF_SA_CANCEL_STATUS;
             if (String.isNotBlank(req.cancellationReason)) {
                 sa.CancellationReason = req.cancellationReason.left(255);
@@ -474,6 +472,27 @@ public without sharing class HC_BookingActionsInvocable {
     /**
      * Populates bookingUi JSON for Enhanced Web Chat (phase 2 confirmation card).
      */
+    /**
+     * Accepts ownership when the SA is parented to the Person Account (BOOK path) or ContactId matches.
+     * Handles visits where ContactId was never set but ParentRecordId is the patient account.
+     */
+    private static void assertPatientOwnsServiceAppointment(
+        ServiceAppointment sa,
+        Id patientAccountId,
+        Id personContactId
+    ) {
+        if (sa == null || patientAccountId == null) {
+            throw new IllegalArgumentException('Appointment does not belong to the given patient.');
+        }
+        if (sa.ParentRecordId == patientAccountId) {
+            return;
+        }
+        if (personContactId != null && sa.ContactId == personContactId) {
+            return;
+        }
+        throw new IllegalArgumentException('Appointment does not belong to the given patient.');
+    }
+
     private static void setBookingUiFromResult(
         Result res,
         String headline,
@@ -524,5 +543,86 @@ public without sharing class HC_BookingActionsInvocable {
             }
         }
         return false;
+    }
+
+    /**
+     * Seed/demo HealthcareProvider rows often store Contact Id on PractitionerId. ClinicalEncounterProvider.PractitionerId
+     * may only allow Practitioner in some orgs — resolve Practitioner.Id via a Contact lookup field when present.
+     */
+    private static Id tryResolvePractitionerIdFromContact(Id contactId) {
+        if (contactId == null || contactId.getSobjectType() != Contact.SObjectType) {
+            return null;
+        }
+        Schema.SObjectType pracType = null;
+        for (String key : Schema.getGlobalDescribe().keySet()) {
+            if (key.equalsIgnoreCase('Practitioner')) {
+                pracType = Schema.getGlobalDescribe().get(key).getDescribe().getSObjectType();
+                break;
+            }
+        }
+        if (pracType == null) {
+            return null;
+        }
+        String contactLookupField = pickPractitionerContactLookupField(pracType);
+        if (String.isBlank(contactLookupField)) {
+            return null;
+        }
+        String objName = pracType.getDescribe().getName();
+        String q =
+            'SELECT Id FROM ' +
+            objName +
+            ' WHERE ' +
+            contactLookupField +
+            ' = :contactId LIMIT 1';
+        List<SObject> rows;
+        try {
+            rows = Database.query(q);
+        } catch (Exception e) {
+            return null;
+        }
+        return rows.isEmpty() ? null : rows[0].Id;
+    }
+
+    private static String pickPractitionerContactLookupField(Schema.SObjectType pracType) {
+        Map<String, Schema.SObjectField> fm = pracType.getDescribe().fields.getMap();
+        List<String> preference = new List<String>{
+            'ContactId',
+            'SourceContactId',
+            'PersonContactId',
+            'PrimaryContactId'
+        };
+        for (String pref : preference) {
+            Schema.SObjectField sf = null;
+            for (String k : fm.keySet()) {
+                if (k != null && k.equalsIgnoreCase(pref)) {
+                    sf = fm.get(k);
+                    break;
+                }
+            }
+            if (sf == null) {
+                continue;
+            }
+            Schema.DescribeFieldResult d = sf.getDescribe();
+            if (d.getType() != Schema.DisplayType.REFERENCE || !d.isAccessible()) {
+                continue;
+            }
+            for (Schema.SObjectType ref : d.getReferenceTo()) {
+                if (ref == Contact.SObjectType) {
+                    return d.getName();
+                }
+            }
+        }
+        for (Schema.SObjectField sf : fm.values()) {
+            Schema.DescribeFieldResult d = sf.getDescribe();
+            if (d.getType() != Schema.DisplayType.REFERENCE || !d.isAccessible()) {
+                continue;
+            }
+            for (Schema.SObjectType ref : d.getReferenceTo()) {
+                if (ref == Contact.SObjectType) {
+                    return d.getName();
+                }
+            }
+        }
+        return null;
     }
 }

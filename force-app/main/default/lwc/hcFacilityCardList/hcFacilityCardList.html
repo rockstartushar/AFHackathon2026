@@ -8,11 +8,25 @@
                 <template if:true={hasRows}>
                     <ul class="hc-fac-list">
                         <template for:each={cards} for:item="card">
-                            <li key={card.key} class="hc-fac-card">
-                                <div class="hc-fac-card-title">{card.title}</div>
-                                <template if:true={card.subtitle}>
-                                    <div class="hc-fac-card-sub">{card.subtitle}</div>
-                                </template>
+                            <li
+                                key={card.key}
+                                class="hc-fac-card"
+                                role="button"
+                                tabindex="0"
+                                title="Click to copy this facility"
+                                data-copytext={card.copyText}
+                                onclick={handleCardCopy}
+                                onkeydown={handleCardKeydown}
+                            >
+                                <div class="hc-fac-card-row">
+                                    <div class="hc-fac-card-text">
+                                        <div class="hc-fac-card-title">{card.title}</div>
+                                        <template if:true={card.subtitle}>
+                                            <div class="hc-fac-card-sub">{card.subtitle}</div>
+                                        </template>
+                                    </div>
+                                    <span class="hc-fac-copy-hint">Copy</span>
+                                </div>
                             </li>
                         </template>
                     </ul>
@@ -26,7 +40,6 @@
             <lightning-card icon-name="standard:account" variant="base">
                 <p class="hc-fac-empty">Unable to display facility list.</p>
             </lightning-card>
-            
         </template>
     </div>
 </template>

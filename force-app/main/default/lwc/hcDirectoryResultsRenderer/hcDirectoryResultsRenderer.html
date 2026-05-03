@@ -4,9 +4,23 @@
             <template if:true={hasRows}>
                 <ul class="hc-dir-list">
                     <template for:each={cards} for:item="card">
-                        <li key={card.key} class="hc-dir-card" tabindex="0">
-                            <div class="hc-dir-card-title">{card.title}</div>
-                            <div class="hc-dir-card-sub">{card.subtitle}</div>
+                        <li
+                            key={card.key}
+                            class="hc-dir-card"
+                            role="button"
+                            tabindex="0"
+                            title="Click to copy this provider"
+                            data-copytext={card.copyText}
+                            onclick={handleCardCopy}
+                            onkeydown={handleCardKeydown}
+                        >
+                            <div class="hc-dir-card-row">
+                                <div class="hc-dir-card-text">
+                                    <div class="hc-dir-card-title">{card.title}</div>
+                                    <div class="hc-dir-card-sub">{card.subtitle}</div>
+                                </div>
+                                <span class="hc-dir-copy-hint">Copy</span>
+                            </div>
                         </li>
                     </template>
                 </ul>

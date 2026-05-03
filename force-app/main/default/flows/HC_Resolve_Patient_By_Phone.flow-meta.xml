@@ -26,13 +26,75 @@
         <nameSegment>linkToVerifiedPatient</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <actionCalls>
+        <name>Resolve_Caller_From_Session</name>
+        <label>Resolve Caller From Session</label>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
+        <actionName>HCMessagingSessionCallerPhone</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Apply_Channel_Phone</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_No_Match</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>messagingSessionId</name>
+            <value>
+                <elementReference>input_MessagingSessionId</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>resolveCallerFromSession</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>66.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
+        <name>Clear_Caller_Hint_Typed</name>
+        <label>Clear Caller Hint Typed</label>
+        <locationX>314</locationX>
+        <locationY>134</locationY>
+        <assignmentItems>
+            <assignToReference>output_CallerPhoneHint</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Normalize_Phone_Input</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Apply_Channel_Phone</name>
+        <label>Apply Channel Phone</label>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>normalized_phone</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Resolve_Caller_From_Session.normalizedPhone</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>output_CallerPhoneHint</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Resolve_Caller_From_Session.callerPhoneHint</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Person_Account</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Normalize_Phone_Input</name>
         <label>Normalize Phone Input</label>
-        <locationX>182</locationX>
-        <locationY>134</locationY>
+        <locationX>314</locationX>
+        <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>normalized_phone</assignToReference>
             <operator>Assign</operator>
@@ -114,6 +176,31 @@
         </assignmentItems>
     </assignments>
     <decisions>
+        <name>Choose_Phone_Source</name>
+        <label>Choose Phone Source</label>
+        <locationX>182</locationX>
+        <locationY>50</locationY>
+        <defaultConnector>
+            <targetReference>Clear_Caller_Hint_Typed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Use typed phone</defaultConnectorLabel>
+        <rules>
+            <name>Use_Channel_Sender</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FX_Use_Channel_Phone</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Resolve_Caller_From_Session</targetReference>
+            </connector>
+            <label>Use WhatsApp sender</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Should_Link_Messaging_Session</name>
         <label>Should link messaging session?</label>
         <locationX>314</locationX>
@@ -163,7 +250,7 @@
             <label>Not found</label>
         </rules>
     </decisions>
-    <description>Resolves Person Account by PersonMobilePhone (exact match after same normalization as HC_Create_Guest_Person_Account: strip spaces, dashes, parentheses). If multiple patients share the same phone, first returned row wins. Optional input_MessagingSessionId: when set (e.g. Enhanced Chat session Id), sets MessagingSession.EndUserContactId via HC_MessagingSessionContactLink after UNIQUE_MATCH.</description>
+    <description>Resolves Person Account by PersonMobilePhone (exact match after normalization). When input_Phone is blank and input_MessagingSessionId is set on a WhatsApp session, uses MessagingEndUser.MessagingPlatformKey as the lookup number and sets output_CallerPhoneHint for a brief yes/no confirmation in chat. Web / typed phone: pass input_Phone as before (hint cleared). Optional input_MessagingSessionId still links EndUserContactId after UNIQUE_MATCH.</description>
     <environments>Default</environments>
     <formulas>
         <name>Normalize_Phone_Formula</name>
@@ -174,6 +261,11 @@
         <name>Has_Messaging_Session_Id</name>
         <dataType>Boolean</dataType>
         <expression>NOT(ISBLANK({!input_MessagingSessionId}))</expression>
+    </formulas>
+    <formulas>
+        <name>FX_Use_Channel_Phone</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(ISBLANK({!input_Phone}), NOT(ISBLANK({!input_MessagingSessionId})))</expression>
     </formulas>
     <interviewLabel>HC Resolve Patient By Phone {!$Flow.CurrentDateTime}</interviewLabel>
     <label>HC Resolve Patient By Phone</label>
@@ -229,7 +321,7 @@
         <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Normalize_Phone_Input</targetReference>
+            <targetReference>Choose_Phone_Source</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -263,6 +355,13 @@
     </variables>
     <variables>
         <name>output_Status</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>output_CallerPhoneHint</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

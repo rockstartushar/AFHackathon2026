@@ -7,4 +7,9 @@
         <target>lightning__AgentforceOutput</target>
         <target>lightning__RecordPage</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AgentforceOutput">
+            <sourceType name="c__HCDirectoryUi" />
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

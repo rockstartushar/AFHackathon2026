@@ -18,13 +18,18 @@
             <template if:true={hasSlots}>
                 <ul class="hc-slot-list">
                     <template for:each={slotRows} for:item="row">
-                        <li key={row.key} 
-                            class="hc-slot-item" 
-                            tabindex="0" 
-                            onclick={handleSlotClick} 
-                            data-value={row.label} 
-                            style="cursor: pointer;">
+                        <li
+                            key={row.key}
+                            class="hc-slot-item"
+                            role="button"
+                            tabindex="0"
+                            title="Click to copy this time"
+                            data-copytext={row.copyText}
+                            onclick={handleSlotCopy}
+                            onkeydown={handleSlotKeydown}
+                        >
                             <span class="hc-slot-label">{row.label}</span>
+                            <span class="hc-slot-copy-hint">Copy</span>
                         </li>
                     </template>
                 </ul>
@@ -34,9 +39,11 @@
             </template>
         </template>
 
-        <!-- 3. Error State: Only shows if there is no payload and no selection -->
-        <template if:false={value}>
-            <p class="hc-slot-empty">Unable to display slots.</p>
+        <!-- 3. Error State: no usable payload and not a string selection -->
+        <template if:false={payloadObj}>
+            <template if:false={isSelection}>
+                <p class="hc-slot-empty">Unable to display slots.</p>
+            </template>
         </template>
     </div>
 </template>

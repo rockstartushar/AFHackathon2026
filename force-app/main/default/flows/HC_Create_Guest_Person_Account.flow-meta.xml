@@ -40,8 +40,35 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Find_Existing_Person_Account</targetReference>
+            <targetReference>Valid_Guest_Inputs</targetReference>
         </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Failed_Missing_Required_Fields</name>
+        <label>Set Failed Missing Required Fields</label>
+        <locationX>50</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>output_PatientAccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>output_Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>FAILED</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>output_ErrorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Full name and mobile phone are required. Send your full name, email, and mobile number clearly (for example on separate lines). If you already did, the assistant may not have mapped them to the registration action—try again with: Name: … Email: … Phone: …</stringValue>
+            </value>
+        </assignmentItems>
     </assignments>
     <assignments>
         <name>Set_Matched_Existing_Status</name>
@@ -112,7 +139,7 @@
             <assignToReference>output_ErrorMessage</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>An error occurred while processing the patient account request. Please try again or contact support.</stringValue>
+                <elementReference>Guest_Create_Fault_Detail</elementReference>
             </value>
         </assignmentItems>
     </assignments>
@@ -169,6 +196,31 @@
             </value>
         </assignmentItems>
     </assignments>
+    <decisions>
+        <name>Valid_Guest_Inputs</name>
+        <label>Valid guest inputs</label>
+        <locationX>200</locationX>
+        <locationY>188</locationY>
+        <defaultConnector>
+            <targetReference>Set_Failed_Missing_Required_Fields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Missing name or phone</defaultConnectorLabel>
+        <rules>
+            <name>Inputs_OK</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Has_Required_Guest_Fields</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Find_Existing_Person_Account</targetReference>
+            </connector>
+            <label>Inputs OK</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Should_Link_Messaging_Session</name>
         <label>Should link messaging session?</label>
@@ -249,7 +301,17 @@
     <formulas>
         <name>Normalize_Phone_Formula</name>
         <dataType>String</dataType>
-        <expression>SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE({!PersonMobilePhone}, &apos; &apos;, &apos;&apos;), &apos;-&apos;, &apos;&apos;), &apos;(&apos;, &apos;&apos;), &apos;)&apos;, &apos;&apos;)</expression>
+        <expression>SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE({!PersonMobilePhone}, &apos; &apos;, &apos;&apos;), &apos;-&apos;, &apos;&apos;), &apos;(&apos;, &apos;&apos;), &apos;)&apos;, &apos;&apos;), &apos;+&apos;, &apos;&apos;), &apos;.&apos;, &apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>Has_Required_Guest_Fields</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(LEN(TRIM({!patient_full_name})) &gt; 0, LEN(TRIM({!normalized_phone})) &gt; 0)</expression>
+    </formulas>
+    <formulas>
+        <name>Guest_Create_Fault_Detail</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!$Flow.FaultMessage}), &apos;An error occurred while processing the patient account request. Please try again or contact support.&apos;, LEFT({!$Flow.FaultMessage}, 500))</expression>
     </formulas>
     <formulas>
         <name>Extract_FirstName_Formula</name>
@@ -382,6 +444,13 @@
             <operator>EqualTo</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>PersonAccount</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>

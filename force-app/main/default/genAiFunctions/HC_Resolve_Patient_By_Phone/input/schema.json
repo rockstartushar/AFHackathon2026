@@ -1,14 +1,20 @@
 {
-  "required" : [ "input_Phone" ],
-  "unevaluatedProperties" : false,
-  "properties" : {
-    "input_Phone" : {
-      "title" : "input_Phone",
-      "description" : "Exact match to Person Account PersonMobilePhone (format as user states; normalize in data).",
-      "lightning:type" : "lightning__textType",
-      "lightning:isPII" : false,
-      "copilotAction:isUserInput" : false
+  "unevaluatedProperties": false,
+  "properties": {
+    "input_Phone": {
+      "title": "input_Phone",
+      "description": "Person mobile as the patient typed it. Leave blank on WhatsApp when input_MessagingSessionId is set—the flow uses the channel sender address instead.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "input_MessagingSessionId": {
+      "title": "input_MessagingSessionId",
+      "description": "Active MessagingSession Id from context. Required for WhatsApp auto-identity when input_Phone is blank.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
     }
   },
-  "lightning:type" : "lightning__objectType"
+  "lightning:type": "lightning__objectType"
 }

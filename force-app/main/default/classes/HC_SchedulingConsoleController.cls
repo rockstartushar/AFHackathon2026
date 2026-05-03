@@ -12,9 +12,11 @@ public inherited sharing class HC_SchedulingConsoleController {
         };
         Flow.Interview fi = Flow.Interview.createInterview('HC_Resolve_Patient_By_Phone', vars);
         fi.start();
+        Object callerHint = fi.getVariableValue('output_CallerPhoneHint');
         return new Map<String, Object>{
             'output_Status' => String.valueOf(fi.getVariableValue('output_Status')),
-            'output_PatientAccountId' => fi.getVariableValue('output_PatientAccountId')
+            'output_PatientAccountId' => fi.getVariableValue('output_PatientAccountId'),
+            'output_CallerPhoneHint' => callerHint != null ? String.valueOf(callerHint) : ''
         };
     }
 

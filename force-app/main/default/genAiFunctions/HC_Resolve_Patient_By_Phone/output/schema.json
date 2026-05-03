@@ -1,24 +1,33 @@
 {
-  "unevaluatedProperties" : false,
-  "properties" : {
-    "output_PatientAccountId" : {
-      "title" : "output_PatientAccountId",
-      "description" : "Person Account Id when matched; empty if no match.",
-      "lightning:type" : "lightning__textType",
-      "lightning:isPII" : false,
-      "copilotAction:isDisplayable" : false,
-      "copilotAction:isUsedByPlanner" : true,
-      "copilotAction:useHydratedPrompt" : false
+  "unevaluatedProperties": false,
+  "properties": {
+    "output_PatientAccountId": {
+      "title": "output_PatientAccountId",
+      "description": "Person Account Id when matched; empty if no match.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": false
     },
-    "output_Status" : {
-      "title" : "output_Status",
-      "description" : "UNIQUE_MATCH or NO_MATCH.",
-      "lightning:type" : "lightning__textType",
-      "lightning:isPII" : false,
-      "copilotAction:isDisplayable" : true,
-      "copilotAction:isUsedByPlanner" : true,
-      "copilotAction:useHydratedPrompt" : false
+    "output_Status": {
+      "title": "output_Status",
+      "description": "UNIQUE_MATCH or NO_MATCH.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": false
+    },
+    "output_CallerPhoneHint": {
+      "title": "output_CallerPhoneHint",
+      "description": "When identity came from the channel (e.g. WhatsApp), a short phrase to ask yes/no confirmation without reading the full number. Empty when the patient typed input_Phone manually.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": true,
+      "copilotAction:isUsedByPlanner": true,
+      "copilotAction:useHydratedPrompt": true
     }
   },
-  "lightning:type" : "lightning__objectType"
+  "lightning:type": "lightning__objectType"
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Read Symptom_Specialty_Map__c for Experience Cloud guest users when routing runs in user context. Assign under Experience Builder → Administration → Members, or to the Guest User profile for the site.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Onco Experience Guest Symptom Map Read</label>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Symptom_Specialty_Map__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+</PermissionSet>

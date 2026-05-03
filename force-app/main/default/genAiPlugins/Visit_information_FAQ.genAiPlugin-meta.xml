@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <canEscalate>false</canEscalate>
-    <description>User asks what to bring (including first oncology appointment), documents or preparation checklists, visiting etiquette, privacy, billing literacy, or other FAQs from Knowledge—not booking or directory data.</description>
+    <description>Visit preparation and education from Knowledge: what to bring, carry, keep, or pack; things to take care of while visiting; what to know before or during a clinic or hospital appointment; first oncology visit preparation; documents, IDs, checklists; visiting hours, etiquette, privacy, billing literacy, parking, check-in, arrival logistics. Includes phrases like &quot;things to take care of while visiting for appointment&quot; or &quot;what should I prepare&quot;. Prefer this topic over Off Topic or Scheduling. Not for booking slots, finding doctors, or insurance summaries.</description>
     <developerName>Visit_information_FAQ</developerName>
     <genAiPluginInstructions>
-        <description>MANDATORY: You must call the 'Answer Questions with Knowledge' action immediately for every user query in this topic. Do not provide a response until the tool has been executed.</description>
+        <description>Topic guard: If the user mentions visiting, appointment preparation, clinic, hospital, what to bring/carry/keep/take care of/pack, documents, ID, check-in, or logistics before arrival—this is Visit information (FAQ). Do not route to Off Topic or Scheduling.</description>
+        <developerName>instruction_faq_not_off_topic</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>FAQ not Off Topic</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>MANDATORY: Call Answer Questions with Knowledge for every user query in this topic before answering. Do not reply with only &quot;what do you need help with&quot; or generic deflection—run the Knowledge action first, then summarize.</description>
         <developerName>instruction_faq_knowledge_first</developerName>
         <language xsi:nil="true"/>
         <masterLabel>Call Knowledge Tool First</masterLabel>
@@ -28,5 +35,5 @@
     <localDeveloperName>Visit_information_FAQ</localDeveloperName>
     <masterLabel>Visit information (FAQ)</masterLabel>
     <pluginType>Topic</pluginType>
-    <scope>You are the expert for hospital visit preparation and general FAQs. For every query, use the 'Answer Questions with Knowledge' action. If the tool returns no relevant articles, stay within this topic and politely inform the user that specific documentation isn't available for that query, then suggest they contact their care team. Do not allow the conversation to be reclassified as Off Topic if it pertains to hospital visits or preparation.</scope>
+    <scope>You are the expert for hospital visit preparation and general FAQs. For every query, use the 'Answer Questions with Knowledge' action. If the tool returns no relevant articles, stay within this topic and politely inform the user that specific documentation isn't available for that query, then suggest they contact their care team. Do not allow the conversation to be reclassified as Off Topic if it pertains to hospital visits or preparation. If Knowledge returns nothing usable after calling the tool, you may add a few clearly labeled general preparation tips (state they are general guidance, not from articles) so the answer remains grounded in transparency.</scope>
 </GenAiPlugin>

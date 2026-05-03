@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <canEscalate>false</canEscalate>
-    <description>User wants to book, reschedule, or cancel an appointment, or asks about availability, wait times, or capacity; or has provided a phone number to verify identity for scheduling. For booking: collect site or facility (or city), target date, optional doctor or specialty—then show slots from tools; the slot list is the time offer. Do not require a separate &quot;time&quot; before slots are shown.</description>
+    <description>EXCLUDE FIRST: Not for visit preparation FAQs—what to bring, take care of, keep, pack, documents, etiquette, or &quot;while visiting for my appointment&quot; (arrival logistics) belong to Visit information (FAQ). User wants to book, reschedule, or cancel an appointment, or asks about availability, wait times, or capacity; or has provided a phone number to verify identity for scheduling. For booking: collect site or facility (or city), target date, optional doctor or specialty—then show slots from tools; the slot list is the time offer. Do not require a separate &quot;time&quot; before slots are shown.</description>
     <developerName>Scheduling_visits</developerName>
     <genAiFunctions>
         <functionName>HC_Booking_Actions</functionName>
@@ -35,7 +35,7 @@
         <sortOrder>0</sortOrder>
     </genAiPluginInstructions>
     <genAiPluginInstructions>
-        <description>Guest identification: Ask if returning patient. RETURNING: get mobile and call HC_Resolve_Patient_By_Phone (pass input_MessagingSessionId when supported). Single match: use patientAccountId. Multiple matches: hand off. NEW: collect full name, mobile, email then call HC_Create_Guest_Person_Account (same input when supported). Use returned Id when status is CREATED_NEW or MATCHED_EXISTING.</description>
+        <description>Guest identification: Ask if returning patient. RETURNING on WhatsApp: do not ask them to type their mobile first—call HC_Resolve_Patient_By_Phone with input_Phone blank and input_MessagingSessionId from context; use output_CallerPhoneHint for a single yes/no confirmation of the WhatsApp number on file; if they decline, collect mobile and call again with input_Phone. RETURNING on web / in-app chat: collect mobile and pass input_Phone (and input_MessagingSessionId when supported). Single match: use patientAccountId. Multiple matches: hand off. NEW: collect full name, mobile, email then call HC_Create_Guest_Person_Account (same input when supported). Use returned Id when status is CREATED_NEW or MATCHED_EXISTING.</description>
         <developerName>instruction_0_1776607041902</developerName>
         <language xsi:nil="true"/>
         <masterLabel>instruction_0_1776607041902</masterLabel>

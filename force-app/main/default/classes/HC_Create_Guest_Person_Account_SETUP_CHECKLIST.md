@@ -158,6 +158,11 @@ After making the changes above:
 ### Error: "Unable to create Person Account - Record Type required"
 **Solution:** Check Step 6 - assign Person Account record type visibility
 
+### Error email: `INVALID_CROSS_REFERENCE_KEY: Record Type ID: this ID value isn't valid for the user`
+**Cause:** The flow resolved a Person Account `RecordTypeId`, but the **Einstein Agent / integration user** does not have **default or assigned access** to that record type on Account.
+
+**Solution:** In the permission set assigned to that user (see Step 6), enable **Record Type** access for the same Person type the flow uses. The flow queries `RecordType` with `DeveloperName = PersonAccount` (standard Person Accounts). If your org uses a **custom** Person record type instead, either grant visibility for that type in the permission set or change the flow’s `Get_Person_Record_Type` filter to your type’s **Developer Name**. This cannot always be shipped in repo metadata because some orgs do not expose `Account.PersonAccount` until Person Accounts are enabled.
+
 ### Error: "PersonMobilePhone field not readable"
 **Solution:** Verify PersonMobilePhone has **Read Access** enabled (Step 3)
 

@@ -84,6 +84,10 @@
         <apexClass>HC_MessagingSessionContactLink</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>HCMessagingSessionCallerPhone</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     
     <!-- Account: View All pairs with HealthcareFacility View All in this org -->
     <objectPermissions>

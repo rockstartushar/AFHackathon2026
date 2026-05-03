@@ -49,10 +49,10 @@
     "symptomRoutingUi" : {
       "title" : "symptomRoutingUi",
       "description" : "Rich card for Enhanced Web Chat: specialty, guidance text, and disclaimer in one layout.",
-      "lightning:type" : "@apexClassType/c__HCSymptomRoutingUiModel",
+      "lightning:type" : "c__HCSymptomRoutingUi",
       "lightning:isPII" : false,
       "copilotAction:isDisplayable" : true,
-      "copilotAction:isUsedByPlanner" : false,
+      "copilotAction:isUsedByPlanner" : true,
       "copilotAction:useHydratedPrompt" : false
     }
   },

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Resolves Person Account by PersonMobilePhone (exact match). If multiple patients share the same phone, first returned row wins—normalize phones in data for production.</description>
+    <description>Resolves Person Account by PersonMobilePhone (exact match). On WhatsApp, leave input_Phone blank and pass input_MessagingSessionId so the flow uses the sender address from MessagingEndUser; output_CallerPhoneHint supports a yes/no confirmation. Web chat: pass input_Phone as today.</description>
     <developerName>HC_Resolve_Patient_By_Phone</developerName>
     <invocationTarget>HC_Resolve_Patient_By_Phone</invocationTarget>
     <invocationTargetType>flow</invocationTargetType>

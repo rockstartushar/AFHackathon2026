@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <description>Onco Global digital assistant for scheduling and navigation across our hospital network: find locations and specialists, book or change appointments, and get general visit preparation guidance. For new bookings, use tools to show concrete appointment slots; do not ask the patient for a free-text &quot;time&quot; before available slots are offered—the chosen slot defines the time. Can share informational insurance summaries, counselling document checklists, and non-binding room-rate references for planning—not medical diagnosis or treatment decisions. Coverage, eligibility, and charges are finalized at registration and with your payer or insurer. For emergencies, use local emergency services; this assistant does not provide clinical advice.</description>
+    <description>Onco Global digital assistant for network scheduling and navigation: find locations and specialists; book or change visits using tools to show concrete slots—do not ask for a free-text time before slots exist. Informational insurance summaries, counselling document checklists, and non-binding room rates for planning—not diagnosis or treatment. Coverage finalizes at registration and with payers; use emergency services for crises. ROUTING: Visit preparation (what to bring or pack, take care of while visiting, IDs, check-in, parking, etiquette, arrival logistics) must use Visit information (FAQ) with Knowledge, not Scheduling or Off Topic. Scheduling handles booking, reschedule, cancel, and availability or wait questions only.</description>
     <localActionLinks>
         <genAiFunctionName>AnswerQuestionsWithKnowledge_16jak000001lL0P</genAiFunctionName>
     </localActionLinks>
@@ -11,18 +11,162 @@
         <genAiPluginName>Escalation_16jak000001lL0P</genAiPluginName>
     </localTopicLinks>
     <localTopicLinks>
+        <genAiPluginName>Visit_information_FAQ_16jak000001lL0P</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
         <genAiPluginName>Provider_Matching_16jak000001lL0P</genAiPluginName>
     </localTopicLinks>
     <localTopicLinks>
         <genAiPluginName>Scheduling_visits_16jak000001lL0P</genAiPluginName>
     </localTopicLinks>
-    <localTopicLinks>
-        <genAiPluginName>Visit_information_FAQ_16jak000001lL0P</genAiPluginName>
-    </localTopicLinks>
+    <localTopics>
+        <fullName>Coverage_prep_16jak000001lL0P</fullName>
+        <canEscalate>false</canEscalate>
+        <description>User asks about insurance on file, documents needed before counselling, approximate room rates, or returning / “book similar” using past visit context.</description>
+        <developerName>Coverage_prep_16jak000001lL0P</developerName>
+        <genAiPluginInstructions>
+            <description>Coverage prep workflow: Call HC_Patient_Data_Actions with INSURANCE, PREREQUISITES, or ROOM_RATES first to get raw summary. Optionally call HC_Coverage_Prep_UI for the Enhanced Web Chat accordion (coveragePrepUi). Pass plain-text summary into HC_Coverage_Prep_Patient_Facing as RawSummaryFromTool when narrative is needed. Do not invent facts; disclaimers are in the template.</description>
+            <developerName>instruction_0_coverage_prep_bundle</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>instruction_0_coverage_prep_bundle</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Insurance: HC Patient Data Actions, operation = INSURANCE, pass patientAccountId after verification if needed.</description>
+            <developerName>instruction_0_1776607261975</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>instruction_0_1776607261975</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Prerequisites: operation = PREREQUISITES, pass serviceAppointmentId for the counselling appointment.</description>
+            <developerName>instruction_1_1776607261975</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>instruction_1_1776607261975</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Room rates: operation = ROOM_RATES, pass healthcareFacilityId; optional roomTypeApi for ICU vs Private etc. Always state rates are illustrative, not a quote.</description>
+            <developerName>instruction_2_1776607261975</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>instruction_2_1776607261975</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Rebook context: operation = BOOKING_SESSION for storing or recalling last facility / context token per patient; combine with directory/scheduling subagents for actual new bookings.</description>
+            <developerName>instruction_3_1776607261975</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>instruction_3_1776607261975</masterLabel>
+            <sortOrder>4</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Context / resume tokens: Use only opaque, non-clinical values your automation expects (e.g. a short session key). Do not ask patients to dictate diagnoses, detailed clinical notes, or sensitive identifiers into chat to fill “token” or memo-like fields.</description>
+            <developerName>instruction_4_1776607261975</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>instruction_4_1776607261975</masterLabel>
+            <sortOrder>5</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>HC_Log_Agent_Action_179ak000002p8NP</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>HC_Patient_Data_Actions_179ak000002p8NP</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>HC_Coverage_Prep_UI_179ak000002p8NP</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>HC_Coverage_Prep_Patient_Facing_179ak000002p8NP</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>HC_Patient_Data_Actions_179ak000002p8NP</fullName>
+            <description>Read-only summaries and booking-session helpers: INSURANCE (plans on file), PREREQUISITES (documents before counselling), ROOM_RATES (non-binding daily rates), SPECIALTIES (catalog), BOOKING_SESSION (save rebook context). Does not schedule appointments — use HC Booking Actions for BOOK/MODIFY/CANCEL.</description>
+            <developerName>HC_Patient_Data_Actions_179ak000002p8NP</developerName>
+            <invocationTarget>HC_PatientDataActionsInvocable</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>HC_Patient_Data_Actions</localDeveloperName>
+            <masterLabel>HC Patient Data Actions</masterLabel>
+            <progressIndicatorMessage>Checking your records…</progressIndicatorMessage>
+            <source>HC_Patient_Data_Actions</source>
+        </localActions>
+        <localActions>
+            <fullName>HC_Coverage_Prep_UI_179ak000002p8NP</fullName>
+            <description>Structured visit prep checklist (coveragePrepUi) for Enhanced Web Chat accordion; complements HC_Coverage_Prep_Patient_Facing narrative.</description>
+            <developerName>HC_Coverage_Prep_UI_179ak000002p8NP</developerName>
+            <invocationTarget>HCCoveragePrepUiInvocable</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>HC_Coverage_Prep_UI</localDeveloperName>
+            <masterLabel>HC Coverage Prep UI</masterLabel>
+            <progressIndicatorMessage>Preparing visit checklist…</progressIndicatorMessage>
+            <source>HC_Coverage_Prep_UI</source>
+        </localActions>
+        <localActions>
+            <fullName>HC_Log_Agent_Action_179ak000002p8NP</fullName>
+            <description>Inserts Agent_Action_Log__c for audit / demo. Optional lookup Ids omitted in v1—extend with decisions if you pass Ids from agent actions.</description>
+            <developerName>HC_Log_Agent_Action_179ak000002p8NP</developerName>
+            <invocationTarget>HC_Log_Agent_Action</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>HC_Log_Agent_Action</localDeveloperName>
+            <masterLabel>HC Log Agent Action</masterLabel>
+            <progressIndicatorMessage>Recording this step…</progressIndicatorMessage>
+            <source>HC_Log_Agent_Action</source>
+        </localActions>
+        <localActions>
+            <fullName>HC_Coverage_Prep_Patient_Facing_179ak000002p8NP</fullName>
+            <description>Generates patient-facing coverage and preparation information using the HC_Coverage_Prep_Patient_Facing prompt template. Pass raw summary text from HC_Patient_Data_Actions as the template input.</description>
+            <developerName>HC_Coverage_Prep_Patient_Facing_179ak000002p8NP</developerName>
+            <invocationTarget>HC_Coverage_Prep_Patient_Facing</invocationTarget>
+            <invocationTargetType>generatePromptResponse</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>HC_Coverage_Prep_Patient_Facing</localDeveloperName>
+            <masterLabel>HC Coverage Prep Patient Facing</masterLabel>
+            <progressIndicatorMessage>Preparing your summary…</progressIndicatorMessage>
+            <source>HC_Coverage_Prep_Patient_Facing</source>
+        </localActions>
+        <localDeveloperName>Coverage_prep</localDeveloperName>
+        <masterLabel>Coverage &amp; prep</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>Read summaries from CRM for coverage and prep; room rates are non-binding information only. Booking-session updates support returning patients—not clinical notes.</scope>
+        <source>Coverage_prep</source>
+    </localTopics>
+    <localTopics>
+        <fullName>Escalation_16jak000001lL0P</fullName>
+        <canEscalate>true</canEscalate>
+        <description>Handles requests from users who want to transfer or escalate their conversation to a live human agent.</description>
+        <developerName>Escalation_16jak000001lL0P</developerName>
+        <genAiPluginInstructions>
+            <description>If a user explicitly asks to transfer to a live agent, escalate the conversation.</description>
+            <developerName>escalateonrequest</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>escalate-on-request</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If escalation to a live agent fails for any reason, acknowledge the issue and ask the user whether they would like to log a support case instead.</description>
+            <developerName>promptonescalationfailure</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>prompt-on-escalation-failure</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>Escalation</localDeveloperName>
+        <masterLabel>Escalation</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>Your job is to transfer the conversation to a live agent if a user explicitly asks for human assistance or has a complex issue that requires human intervention. If escalation fails, ask the user whether they would like to log a support case so the issue is recorded for follow-up.</scope>
+        <source>SvcCopilotTmpl__Escalation</source>
+    </localTopics>
     <localTopics>
         <fullName>Scheduling_visits_16jak000001lL0P</fullName>
         <canEscalate>false</canEscalate>
-        <description>User wants to book, reschedule, or cancel an appointment, or asks about availability, wait times, or capacity; or has provided a phone number to verify identity for scheduling. For booking, the flow is: confirm patient identity if needed, then collect site or facility (or city), a target date, and optional doctor or specialty—then show available slots from tools. The slot list is the time offer; do not require the user to state a separate &quot;time&quot; before slots are shown (broad preferences like morning may narrow choices only after slots exist). Not for purely informational questions about what to bring or visit preparation—those belong to Visit information (FAQ).</description>
+        <description>EXCLUDE FIRST: Not for visit preparation FAQs—questions like what to bring, take care of, keep, pack, documents, etiquette, or &quot;while visiting for my appointment&quot; (logistics before arrival) belong to Visit information (FAQ), not here. User wants to book, reschedule, or cancel an appointment, or asks about availability, wait times, or capacity; or has provided a phone number to verify identity for scheduling. For booking, the flow is: confirm patient identity if needed, then collect site or facility (or city), a target date, and optional doctor or specialty—then show available slots from tools. The slot list is the time offer; do not require the user to state a separate &quot;time&quot; before slots are shown (broad preferences like morning may narrow choices only after slots exist).</description>
         <developerName>Scheduling_visits_16jak000001lL0P</developerName>
         <genAiPluginInstructions>
             <description>Do not use this topic for educational FAQs such as &quot;what should I bring to my appointment&quot; or general first-visit preparation—use Visit information (FAQ) and Knowledge search instead.</description>
@@ -32,7 +176,7 @@
             <sortOrder>0</sortOrder>
         </genAiPluginInstructions>
         <genAiPluginInstructions>
-            <description>Guest identification: Ask if returning patient. RETURNING: get mobile and call HC_Resolve_Patient_By_Phone (pass input_MessagingSessionId when the action supports it). Single match: use patientAccountId. Multiple matches: hand off. NEW: collect full name, mobile, email then call HC_Create_Guest_Person_Account (same input_MessagingSessionId when supported). Use returned Id when status is CREATED_NEW or MATCHED_EXISTING. Before BOOK, MODIFY, or CANCEL for a guest, resolve identity; if not a single match, do not self-serve book.</description>
+            <description>Guest identification: Ask if returning patient. RETURNING on WhatsApp: do not ask them to type their mobile first—call HC_Resolve_Patient_By_Phone with input_Phone blank, pass input_MessagingSessionId from context, then use output_CallerPhoneHint to ask one short yes/no confirmation that the profile should use this WhatsApp number; if they decline, collect the correct mobile and call again with input_Phone set. RETURNING on web / in-app chat (EmbeddedMessaging, WebChat, etc.): collect mobile as today, pass input_Phone (and input_MessagingSessionId when supported). Single match: use patientAccountId. Multiple matches: hand off. NEW: collect full name, mobile, email then call HC_Create_Guest_Person_Account (same input_MessagingSessionId when supported). Use returned Id when status is CREATED_NEW or MATCHED_EXISTING. Before BOOK, MODIFY, or CANCEL for a guest, resolve identity; if not a single match, do not self-serve book.</description>
             <developerName>instruction_guest_ident_1776607041902</developerName>
             <language xsi:nil="true"/>
             <masterLabel>instruction_guest_ident_1776607041902</masterLabel>
@@ -126,19 +270,6 @@
             <source>HC_Create_Visit_Reminder_Task</source>
         </localActions>
         <localActions>
-            <fullName>HC_Slot_Suggestion_179ak000002zxLN</fullName>
-            <description>Suggests available appointment slots for a facility (and optional provider) on a target date using OperatingHours/TimeSlot minus booked appointments. Returns slotsJson and summaryText for chat and Enhanced Chat renderers.</description>
-            <developerName>HC_Slot_Suggestion_179ak000002zxLN</developerName>
-            <invocationTarget>HC_SlotSuggestionInvocable</invocationTarget>
-            <invocationTargetType>apex</invocationTargetType>
-            <isConfirmationRequired>false</isConfirmationRequired>
-            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
-            <localDeveloperName>HC_Slot_Suggestion</localDeveloperName>
-            <masterLabel>HC Slot Suggestion</masterLabel>
-            <progressIndicatorMessage>Finding available times…</progressIndicatorMessage>
-            <source>HC_Slot_Suggestion</source>
-        </localActions>
-        <localActions>
             <fullName>HC_List_Patient_Visits_179ak000002p8NN</fullName>
             <description>Lists the patient&apos;s active visits (facility, times, provider, ServiceAppointment Id) for choosing MODIFY or CANCEL. Call after identity resolution with patientAccountId.</description>
             <developerName>HC_List_Patient_Visits_179ak000002p8NN</developerName>
@@ -152,17 +283,17 @@
             <source>HC_List_Patient_Visits</source>
         </localActions>
         <localActions>
-            <fullName>HC_Booking_Actions_179ak000002zxLN</fullName>
-            <description>Creates, reschedules, or cancels visits: BOOK / MODIFY / CANCEL on ServiceAppointment and ClinicalEncounter. Use only after the patient is verified (matched Person Account). Do not use for directory search (use HC Find Specialist) or insurance/prereq lists (use HC Patient Data Actions). Enforces facility daily cap when Max_Daily_Appointments__c is set.</description>
-            <developerName>HC_Booking_Actions_179ak000002zxLN</developerName>
-            <invocationTarget>HC_BookingActionsInvocable</invocationTarget>
+            <fullName>HC_Slot_Suggestion_179ak000002zxLN</fullName>
+            <description>Suggests available appointment slots for a facility (and optional provider) on a target date using OperatingHours/TimeSlot minus booked appointments. Returns slotsJson and summaryText for chat and Enhanced Chat renderers.</description>
+            <developerName>HC_Slot_Suggestion_179ak000002zxLN</developerName>
+            <invocationTarget>HC_SlotSuggestionInvocable</invocationTarget>
             <invocationTargetType>apex</invocationTargetType>
             <isConfirmationRequired>false</isConfirmationRequired>
             <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
-            <localDeveloperName>HC_Booking_Actions</localDeveloperName>
-            <masterLabel>HC Booking Actions</masterLabel>
-            <progressIndicatorMessage>Updating your appointment…</progressIndicatorMessage>
-            <source>HC_Booking_Actions</source>
+            <localDeveloperName>HC_Slot_Suggestion</localDeveloperName>
+            <masterLabel>HC Slot Suggestion</masterLabel>
+            <progressIndicatorMessage>Finding available times…</progressIndicatorMessage>
+            <source>HC_Slot_Suggestion</source>
         </localActions>
         <localActions>
             <fullName>HC_Resolve_Patient_By_Phone_179ak000002zxLN</fullName>
@@ -178,17 +309,17 @@
             <source>HC_Resolve_Patient_By_Phone</source>
         </localActions>
         <localActions>
-            <fullName>HC_Log_Agent_Action_179ak000002p8NN</fullName>
-            <description>Inserts Agent_Action_Log__c for audit / demo. Optional lookup Ids omitted in v1—extend with decisions if you pass Ids from agent actions.</description>
-            <developerName>HC_Log_Agent_Action_179ak000002p8NN</developerName>
-            <invocationTarget>HC_Log_Agent_Action</invocationTarget>
-            <invocationTargetType>flow</invocationTargetType>
+            <fullName>HC_Booking_Actions_179ak000002zxLN</fullName>
+            <description>Creates, reschedules, or cancels visits: BOOK / MODIFY / CANCEL on ServiceAppointment and ClinicalEncounter. Use only after the patient is verified (matched Person Account). Do not use for directory search (use HC Find Specialist) or insurance/prereq lists (use HC Patient Data Actions). Enforces facility daily cap when Max_Daily_Appointments__c is set.</description>
+            <developerName>HC_Booking_Actions_179ak000002zxLN</developerName>
+            <invocationTarget>HC_BookingActionsInvocable</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
             <isConfirmationRequired>false</isConfirmationRequired>
             <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
-            <localDeveloperName>HC_Log_Agent_Action</localDeveloperName>
-            <masterLabel>HC Log Agent Action</masterLabel>
-            <progressIndicatorMessage>Recording this step…</progressIndicatorMessage>
-            <source>HC_Log_Agent_Action</source>
+            <localDeveloperName>HC_Booking_Actions</localDeveloperName>
+            <masterLabel>HC Booking Actions</masterLabel>
+            <progressIndicatorMessage>Updating your appointment…</progressIndicatorMessage>
+            <source>HC_Booking_Actions</source>
         </localActions>
         <localActions>
             <fullName>HC_Get_Facilities_179ak000002zxLN</fullName>
@@ -202,6 +333,19 @@
             <masterLabel>HC Get Facilities (Enhanced Chat)</masterLabel>
             <progressIndicatorMessage>Looking up hospitals…</progressIndicatorMessage>
             <source>HC_Get_Facilities_Chat</source>
+        </localActions>
+        <localActions>
+            <fullName>HC_Log_Agent_Action_179ak000002p8NN</fullName>
+            <description>Inserts Agent_Action_Log__c for audit / demo. Optional lookup Ids omitted in v1—extend with decisions if you pass Ids from agent actions.</description>
+            <developerName>HC_Log_Agent_Action_179ak000002p8NN</developerName>
+            <invocationTarget>HC_Log_Agent_Action</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>HC_Log_Agent_Action</localDeveloperName>
+            <masterLabel>HC Log Agent Action</masterLabel>
+            <progressIndicatorMessage>Recording this step…</progressIndicatorMessage>
+            <source>HC_Log_Agent_Action</source>
         </localActions>
         <localActions>
             <fullName>HC_Create_Guest_Person_Account_179ak000002zxLN</fullName>
@@ -225,34 +369,41 @@
     <localTopics>
         <fullName>Visit_information_FAQ_16jak000001lL0P</fullName>
         <canEscalate>false</canEscalate>
-        <description>User asks what to bring to a visit (including first oncology appointment), documents or preparation checklists, visiting hours etiquette, privacy expectations, billing literacy, or other educational FAQs answered from Knowledge—not booking or directory lookup.</description>
+        <description>Visit preparation and education from Knowledge: what to bring, carry, keep, or pack; things to take care of while visiting; what to know before or during a clinic or hospital appointment; first oncology visit preparation; documents, IDs, checklists; visiting hours, etiquette, privacy, billing literacy, parking, check-in, arrival logistics. Includes phrases like &quot;things to take care of while visiting for appointment&quot; or &quot;what should I prepare&quot;. Not for booking slots, finding doctors, or insurance summaries—those use other topics.</description>
         <developerName>Visit_information_FAQ_16jak000001lL0P</developerName>
         <genAiPluginInstructions>
-            <description>Mandatory: Call Answer Questions with Knowledge using the user&apos;s question (or a short search phrase) before answering. Summarize using retrieved snippets; quote key bullets when helpful.</description>
+            <description>Topic guard: If the user mentions visiting, appointment preparation, clinic, hospital, what to bring/carry/keep/take care of/pack, documents, ID, check-in, or logistics before arrival—this is Visit information (FAQ). Do not route to Off Topic or Scheduling.</description>
+            <developerName>instruction_faq_not_off_topic</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>instruction_faq_not_off_topic</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Mandatory: Call Answer Questions with Knowledge using the user&apos;s question (or a short search phrase) before answering. Do not reply with only &quot;what do you need help with&quot; or generic deflection—always run the Knowledge action first, then summarize snippets.</description>
             <developerName>instruction_faq_knowledge_first</developerName>
             <language xsi:nil="true"/>
             <masterLabel>instruction_faq_knowledge_first</masterLabel>
-            <sortOrder>0</sortOrder>
+            <sortOrder>1</sortOrder>
         </genAiPluginInstructions>
         <genAiPluginInstructions>
             <description>Prefer retrieved article snippets over generic medical claims.</description>
             <developerName>instruction_0_1776607351173</developerName>
             <language xsi:nil="true"/>
             <masterLabel>instruction_0_1776607351173</masterLabel>
-            <sortOrder>1</sortOrder>
+            <sortOrder>2</sortOrder>
         </genAiPluginInstructions>
         <genAiPluginInstructions>
             <description>Do not diagnose or recommend treatments.</description>
             <developerName>instruction_1_1776607351173</developerName>
             <language xsi:nil="true"/>
             <masterLabel>instruction_1_1776607351173</masterLabel>
-            <sortOrder>2</sortOrder>
+            <sortOrder>3</sortOrder>
         </genAiPluginInstructions>
         <language>en_US</language>
         <localDeveloperName>Visit_information_FAQ</localDeveloperName>
         <masterLabel>Visit information (FAQ)</masterLabel>
         <pluginType>Topic</pluginType>
-        <scope>Use Answer Questions with Knowledge for every FAQ-style message here. Ground answers in retrieved articles. Only if the tool returns no usable snippets, give a brief general reply and suggest the care team—do not claim you cannot access Knowledge without calling the tool first.</scope>
+        <scope>Use Answer Questions with Knowledge for every FAQ-style message here. Ground answers in retrieved articles. Only if the tool returns no usable snippets, give a brief general reply and suggest the care team—do not claim you cannot access Knowledge without calling the tool first. If Knowledge returns nothing usable after the call, you may add short general preparation tips only when you label them explicitly as general guidance (not from articles).</scope>
         <source>Visit_information_FAQ</source>
     </localTopics>
     <localTopics>
@@ -319,19 +470,6 @@
             <functionName>HC_Get_Facilities_179ak000002zxLP</functionName>
         </localActionLinks>
         <localActions>
-            <fullName>HC_Get_Facilities_179ak000002zxLP</fullName>
-            <description>Lists HealthcareFacility (max 25) via Apex: optional Name CONTAINS keyword; else first 25 alpha. Returns facilityListUi (HCFacilityListUiModel) for Enhanced Web Chat cards plus summary in payload.</description>
-            <developerName>HC_Get_Facilities_179ak000002zxLP</developerName>
-            <invocationTarget>HCFacilityListInvocable</invocationTarget>
-            <invocationTargetType>apex</invocationTargetType>
-            <isConfirmationRequired>false</isConfirmationRequired>
-            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
-            <localDeveloperName>HC_Get_Facilities</localDeveloperName>
-            <masterLabel>HC Get Facilities (Enhanced Chat)</masterLabel>
-            <progressIndicatorMessage>Looking up hospitals…</progressIndicatorMessage>
-            <source>HC_Get_Facilities_Chat</source>
-        </localActions>
-        <localActions>
             <fullName>HC_Patient_Data_Actions_179ak000002p8NQ</fullName>
             <description>Read-only summaries and booking-session helpers: INSURANCE (plans on file), PREREQUISITES (documents before counselling), ROOM_RATES (non-binding daily rates), SPECIALTIES (catalog), BOOKING_SESSION (save rebook context). Does not schedule appointments — use HC Booking Actions for BOOK/MODIFY/CANCEL.</description>
             <developerName>HC_Patient_Data_Actions_179ak000002p8NQ</developerName>
@@ -345,17 +483,17 @@
             <source>HC_Patient_Data_Actions</source>
         </localActions>
         <localActions>
-            <fullName>HC_Log_Agent_Action_179ak000002p8NQ</fullName>
-            <description>Inserts Agent_Action_Log__c for audit / demo. Optional lookup Ids omitted in v1—extend with decisions if you pass Ids from agent actions.</description>
-            <developerName>HC_Log_Agent_Action_179ak000002p8NQ</developerName>
-            <invocationTarget>HC_Log_Agent_Action</invocationTarget>
-            <invocationTargetType>flow</invocationTargetType>
+            <fullName>HC_Get_Facilities_179ak000002zxLP</fullName>
+            <description>Lists HealthcareFacility (max 25) via Apex: optional Name CONTAINS keyword; else first 25 alpha. Returns facilityListUi (HCFacilityListUiModel) for Enhanced Web Chat cards plus summary in payload.</description>
+            <developerName>HC_Get_Facilities_179ak000002zxLP</developerName>
+            <invocationTarget>HCFacilityListInvocable</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
             <isConfirmationRequired>false</isConfirmationRequired>
             <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
-            <localDeveloperName>HC_Log_Agent_Action</localDeveloperName>
-            <masterLabel>HC Log Agent Action</masterLabel>
-            <progressIndicatorMessage>Recording this step…</progressIndicatorMessage>
-            <source>HC_Log_Agent_Action</source>
+            <localDeveloperName>HC_Get_Facilities</localDeveloperName>
+            <masterLabel>HC Get Facilities (Enhanced Chat)</masterLabel>
+            <progressIndicatorMessage>Looking up hospitals…</progressIndicatorMessage>
+            <source>HC_Get_Facilities_Chat</source>
         </localActions>
         <localActions>
             <fullName>HC_Route_Symptom_To_Specialty_179ak000002p8NQ</fullName>
@@ -369,6 +507,19 @@
             <masterLabel>HC Route Symptom to Specialty</masterLabel>
             <progressIndicatorMessage>Mapping your request…</progressIndicatorMessage>
             <source>HC_Route_Symptom_To_Specialty</source>
+        </localActions>
+        <localActions>
+            <fullName>HC_Log_Agent_Action_179ak000002p8NQ</fullName>
+            <description>Inserts Agent_Action_Log__c for audit / demo. Optional lookup Ids omitted in v1—extend with decisions if you pass Ids from agent actions.</description>
+            <developerName>HC_Log_Agent_Action_179ak000002p8NQ</developerName>
+            <invocationTarget>HC_Log_Agent_Action</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>HC_Log_Agent_Action</localDeveloperName>
+            <masterLabel>HC Log Agent Action</masterLabel>
+            <progressIndicatorMessage>Recording this step…</progressIndicatorMessage>
+            <source>HC_Log_Agent_Action</source>
         </localActions>
         <localActions>
             <fullName>HC_Find_Specialist_179ak000002zxLP</fullName>
@@ -388,150 +539,6 @@
         <pluginType>Topic</pluginType>
         <scope>Help users explore Onco Global’s facility network and provider directory. Provide lists and plain-text summaries from CRM. Do not book or cancel appointments here. Do not give clinical advice or diagnosis.</scope>
         <source>Provider_Matching</source>
-    </localTopics>
-    <localTopics>
-        <fullName>Coverage_prep_16jak000001lL0P</fullName>
-        <canEscalate>false</canEscalate>
-        <description>User asks about insurance on file, documents needed before counselling, approximate room rates, or returning / “book similar” using past visit context.</description>
-        <developerName>Coverage_prep_16jak000001lL0P</developerName>
-        <genAiPluginInstructions>
-            <description>Coverage prep workflow: Call HC_Patient_Data_Actions with INSURANCE, PREREQUISITES, or ROOM_RATES first to get raw summary. Optionally call HC_Coverage_Prep_UI for the Enhanced Web Chat accordion (coveragePrepUi). Pass plain-text summary into HC_Coverage_Prep_Patient_Facing as RawSummaryFromTool when narrative is needed. Do not invent facts; disclaimers are in the template.</description>
-            <developerName>instruction_0_coverage_prep_bundle</developerName>
-            <language xsi:nil="true"/>
-            <masterLabel>instruction_0_coverage_prep_bundle</masterLabel>
-            <sortOrder>0</sortOrder>
-        </genAiPluginInstructions>
-        <genAiPluginInstructions>
-            <description>Insurance: HC Patient Data Actions, operation = INSURANCE, pass patientAccountId after verification if needed.</description>
-            <developerName>instruction_0_1776607261975</developerName>
-            <language xsi:nil="true"/>
-            <masterLabel>instruction_0_1776607261975</masterLabel>
-            <sortOrder>1</sortOrder>
-        </genAiPluginInstructions>
-        <genAiPluginInstructions>
-            <description>Prerequisites: operation = PREREQUISITES, pass serviceAppointmentId for the counselling appointment.</description>
-            <developerName>instruction_1_1776607261975</developerName>
-            <language xsi:nil="true"/>
-            <masterLabel>instruction_1_1776607261975</masterLabel>
-            <sortOrder>2</sortOrder>
-        </genAiPluginInstructions>
-        <genAiPluginInstructions>
-            <description>Room rates: operation = ROOM_RATES, pass healthcareFacilityId; optional roomTypeApi for ICU vs Private etc. Always state rates are illustrative, not a quote.</description>
-            <developerName>instruction_2_1776607261975</developerName>
-            <language xsi:nil="true"/>
-            <masterLabel>instruction_2_1776607261975</masterLabel>
-            <sortOrder>3</sortOrder>
-        </genAiPluginInstructions>
-        <genAiPluginInstructions>
-            <description>Rebook context: operation = BOOKING_SESSION for storing or recalling last facility / context token per patient; combine with directory/scheduling subagents for actual new bookings.</description>
-            <developerName>instruction_3_1776607261975</developerName>
-            <language xsi:nil="true"/>
-            <masterLabel>instruction_3_1776607261975</masterLabel>
-            <sortOrder>4</sortOrder>
-        </genAiPluginInstructions>
-        <genAiPluginInstructions>
-            <description>Context / resume tokens: Use only opaque, non-clinical values your automation expects (e.g. a short session key). Do not ask patients to dictate diagnoses, detailed clinical notes, or sensitive identifiers into chat to fill “token” or memo-like fields.</description>
-            <developerName>instruction_4_1776607261975</developerName>
-            <language xsi:nil="true"/>
-            <masterLabel>instruction_4_1776607261975</masterLabel>
-            <sortOrder>5</sortOrder>
-        </genAiPluginInstructions>
-        <language>en_US</language>
-        <localActionLinks>
-            <functionName>HC_Log_Agent_Action_179ak000002p8NP</functionName>
-        </localActionLinks>
-        <localActionLinks>
-            <functionName>HC_Patient_Data_Actions_179ak000002p8NP</functionName>
-        </localActionLinks>
-        <localActionLinks>
-            <functionName>HC_Coverage_Prep_UI_179ak000002p8NP</functionName>
-        </localActionLinks>
-        <localActionLinks>
-            <functionName>HC_Coverage_Prep_Patient_Facing_179ak000002p8NP</functionName>
-        </localActionLinks>
-        <localActions>
-            <fullName>HC_Coverage_Prep_UI_179ak000002p8NP</fullName>
-            <description>Structured visit prep checklist (coveragePrepUi) for Enhanced Web Chat accordion; complements HC_Coverage_Prep_Patient_Facing narrative.</description>
-            <developerName>HC_Coverage_Prep_UI_179ak000002p8NP</developerName>
-            <invocationTarget>HCCoveragePrepUiInvocable</invocationTarget>
-            <invocationTargetType>apex</invocationTargetType>
-            <isConfirmationRequired>false</isConfirmationRequired>
-            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
-            <localDeveloperName>HC_Coverage_Prep_UI</localDeveloperName>
-            <masterLabel>HC Coverage Prep UI</masterLabel>
-            <progressIndicatorMessage>Preparing visit checklist…</progressIndicatorMessage>
-            <source>HC_Coverage_Prep_UI</source>
-        </localActions>
-        <localActions>
-            <fullName>HC_Patient_Data_Actions_179ak000002p8NP</fullName>
-            <description>Read-only summaries and booking-session helpers: INSURANCE (plans on file), PREREQUISITES (documents before counselling), ROOM_RATES (non-binding daily rates), SPECIALTIES (catalog), BOOKING_SESSION (save rebook context). Does not schedule appointments — use HC Booking Actions for BOOK/MODIFY/CANCEL.</description>
-            <developerName>HC_Patient_Data_Actions_179ak000002p8NP</developerName>
-            <invocationTarget>HC_PatientDataActionsInvocable</invocationTarget>
-            <invocationTargetType>apex</invocationTargetType>
-            <isConfirmationRequired>false</isConfirmationRequired>
-            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
-            <localDeveloperName>HC_Patient_Data_Actions</localDeveloperName>
-            <masterLabel>HC Patient Data Actions</masterLabel>
-            <progressIndicatorMessage>Checking your records…</progressIndicatorMessage>
-            <source>HC_Patient_Data_Actions</source>
-        </localActions>
-        <localActions>
-            <fullName>HC_Coverage_Prep_Patient_Facing_179ak000002p8NP</fullName>
-            <description>Generates patient-facing coverage and preparation information using the HC_Coverage_Prep_Patient_Facing prompt template. Pass raw summary text from HC_Patient_Data_Actions as the template input.</description>
-            <developerName>HC_Coverage_Prep_Patient_Facing_179ak000002p8NP</developerName>
-            <invocationTarget>HC_Coverage_Prep_Patient_Facing</invocationTarget>
-            <invocationTargetType>generatePromptResponse</invocationTargetType>
-            <isConfirmationRequired>false</isConfirmationRequired>
-            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
-            <localDeveloperName>HC_Coverage_Prep_Patient_Facing</localDeveloperName>
-            <masterLabel>HC Coverage Prep Patient Facing</masterLabel>
-            <progressIndicatorMessage>Preparing your summary…</progressIndicatorMessage>
-            <source>HC_Coverage_Prep_Patient_Facing</source>
-        </localActions>
-        <localActions>
-            <fullName>HC_Log_Agent_Action_179ak000002p8NP</fullName>
-            <description>Inserts Agent_Action_Log__c for audit / demo. Optional lookup Ids omitted in v1—extend with decisions if you pass Ids from agent actions.</description>
-            <developerName>HC_Log_Agent_Action_179ak000002p8NP</developerName>
-            <invocationTarget>HC_Log_Agent_Action</invocationTarget>
-            <invocationTargetType>flow</invocationTargetType>
-            <isConfirmationRequired>false</isConfirmationRequired>
-            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
-            <localDeveloperName>HC_Log_Agent_Action</localDeveloperName>
-            <masterLabel>HC Log Agent Action</masterLabel>
-            <progressIndicatorMessage>Recording this step…</progressIndicatorMessage>
-            <source>HC_Log_Agent_Action</source>
-        </localActions>
-        <localDeveloperName>Coverage_prep</localDeveloperName>
-        <masterLabel>Coverage &amp; prep</masterLabel>
-        <pluginType>Topic</pluginType>
-        <scope>Read summaries from CRM for coverage and prep; room rates are non-binding information only. Booking-session updates support returning patients—not clinical notes.</scope>
-        <source>Coverage_prep</source>
-    </localTopics>
-    <localTopics>
-        <fullName>Escalation_16jak000001lL0P</fullName>
-        <canEscalate>true</canEscalate>
-        <description>Handles requests from users who want to transfer or escalate their conversation to a live human agent.</description>
-        <developerName>Escalation_16jak000001lL0P</developerName>
-        <genAiPluginInstructions>
-            <description>If a user explicitly asks to transfer to a live agent, escalate the conversation.</description>
-            <developerName>escalateonrequest</developerName>
-            <language xsi:nil="true"/>
-            <masterLabel>escalate-on-request</masterLabel>
-            <sortOrder>0</sortOrder>
-        </genAiPluginInstructions>
-        <genAiPluginInstructions>
-            <description>If escalation to a live agent fails for any reason, acknowledge the issue and ask the user whether they would like to log a support case instead.</description>
-            <developerName>promptonescalationfailure</developerName>
-            <language xsi:nil="true"/>
-            <masterLabel>prompt-on-escalation-failure</masterLabel>
-            <sortOrder>1</sortOrder>
-        </genAiPluginInstructions>
-        <language>en_US</language>
-        <localDeveloperName>Escalation</localDeveloperName>
-        <masterLabel>Escalation</masterLabel>
-        <pluginType>Topic</pluginType>
-        <scope>Your job is to transfer the conversation to a live agent if a user explicitly asks for human assistance or has a complex issue that requires human intervention. If escalation fails, ask the user whether they would like to log a support case so the issue is recorded for follow-up.</scope>
-        <source>SvcCopilotTmpl__Escalation</source>
     </localTopics>
     <masterLabel>Onco Global Patient Agent</masterLabel>
     <plannerActions>

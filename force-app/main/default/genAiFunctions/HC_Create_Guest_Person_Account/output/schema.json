@@ -15,7 +15,7 @@
       "description": "CREATED_NEW, MATCHED_EXISTING, or FAILED.",
       "lightning:type": "lightning__textType",
       "lightning:isPII": false,
-      "copilotAction:isDisplayable": true,
+      "copilotAction:isDisplayable": false,
       "copilotAction:isUsedByPlanner": true,
       "copilotAction:useHydratedPrompt": false
     },
@@ -24,7 +24,7 @@
       "description": "Detail when output_Status is FAILED.",
       "lightning:type": "lightning__multilineTextType",
       "lightning:isPII": false,
-      "copilotAction:isDisplayable": true,
+      "copilotAction:isDisplayable": false,
       "copilotAction:isUsedByPlanner": true,
       "copilotAction:useHydratedPrompt": false
     }

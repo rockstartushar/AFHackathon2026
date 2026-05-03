@@ -14,12 +14,41 @@
 }
 
 .hc-dir-card {
+    cursor: pointer;
     border: 1px solid var(--slds-g-color-border-base-1, #dddbda);
     border-radius: 0.5rem;
     padding: 0.65rem 0.75rem;
     background: linear-gradient(180deg, #ffffff 0%, var(--slds-g-color-neutral-base-100, #fafaf9) 100%);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+}
+
+.hc-dir-card-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.hc-dir-card-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.hc-dir-copy-hint {
+    flex-shrink: 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+    opacity: 0.85;
+    padding-top: 0.15rem;
+}
+
+.hc-dir-card:hover .hc-dir-copy-hint,
+.hc-dir-card:focus .hc-dir-copy-hint {
+    opacity: 1;
 }
 
 .hc-dir-card:hover,

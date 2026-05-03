@@ -627,6 +627,15 @@
                 Active__c = true
             ),
             new Symptom_Specialty_Map__c(
+                Name = 'Chest pain → Emergency first',
+                Keyword_Pattern__c = 'chest pain',
+                Match_Priority__c = 11,
+                Recommended_Specialty__c = 'Medical Oncology',
+                Routing_Summary__c = 'Chest pain can be serious. If this is sudden, severe, or you also have shortness of breath, sweating, or pain spreading to the arm or jaw, call local emergency services immediately. If it is not an emergency, we can still help you find the right care team in our network—this message is navigation guidance only, not a diagnosis.',
+                Disclaimer__c = disclaimer,
+                Active__c = true
+            ),
+            new Symptom_Specialty_Map__c(
                 Name = 'Weight loss unexplained → Med Onc',
                 Keyword_Pattern__c = 'unexplained weight loss',
                 Match_Priority__c = 9,

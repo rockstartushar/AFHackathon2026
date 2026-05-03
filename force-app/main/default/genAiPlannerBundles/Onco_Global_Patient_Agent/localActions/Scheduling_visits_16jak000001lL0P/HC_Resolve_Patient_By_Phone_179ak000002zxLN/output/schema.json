@@ -18,6 +18,15 @@
       "copilotAction:isDisplayable" : false,
       "copilotAction:isUsedByPlanner" : true,
       "copilotAction:useHydratedPrompt" : false
+    },
+    "output_CallerPhoneHint" : {
+      "title" : "output_CallerPhoneHint",
+      "description" : "When WhatsApp sender address was used (input_Phone blank), a short phrase for yes/no confirmation. Empty when the patient typed input_Phone.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true,
+      "copilotAction:useHydratedPrompt" : true
     }
   },
   "lightning:type" : "lightning__objectType"

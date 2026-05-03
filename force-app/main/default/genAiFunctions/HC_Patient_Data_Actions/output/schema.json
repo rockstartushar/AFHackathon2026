@@ -15,7 +15,7 @@
       "description" : "Outcome flag.",
       "lightning:type" : "lightning__booleanType",
       "lightning:isPII" : false,
-      "copilotAction:isDisplayable" : true,
+      "copilotAction:isDisplayable" : false,
       "copilotAction:isUsedByPlanner" : true,
       "copilotAction:useHydratedPrompt" : false
     },

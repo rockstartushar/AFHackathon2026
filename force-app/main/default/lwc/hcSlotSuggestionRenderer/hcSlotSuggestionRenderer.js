@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class HcSlotSuggestionRenderer extends LightningElement {
     _internalValue;
@@ -41,11 +42,18 @@ export default class HcSlotSuggestionRenderer extends LightningElement {
     }
 
     /**
-     * Used in HTML to show a "Selection Confirmed" state 
-     * instead of the "Unable to display slots" error.
+     * Selection state only when the model bound a plain string (chosen slot label).
+     * Avoid treating booleans or empty objects as "selection" (prevents "Selected: true" in chat).
      */
     get isSelection() {
-        return this.value && !this.payloadObj;
+        const v = this.value;
+        if (v == null || v === '') {
+            return false;
+        }
+        if (typeof v === 'string') {
+            return v.trim().length > 0;
+        }
+        return false;
     }
 
     get facilityLabel() {
@@ -61,39 +69,68 @@ export default class HcSlotSuggestionRenderer extends LightningElement {
         if (!Array.isArray(slots)) {
             return [];
         }
-        return slots.map((s, idx) => ({
-            key: `slot-${idx}`,
-            label: s.label || `${s.start} – ${s.end}`,
-        }));
+        const fac = this.facilityLabel;
+        const d = this.dateLabel;
+        return slots.map((s, idx) => {
+            const label = s.label || `${s.start} – ${s.end}`;
+            const parts = [fac, d, label].filter((p) => p && String(p).trim());
+            return {
+                key: `slot-${idx}`,
+                label,
+                copyText: parts.join(' — ')
+            };
+        });
     }
 
-    handleSlotClick(event) {
-        // Prevent interaction if the component is already in readOnly mode
-        if (this._readOnly) return;
+    handleSlotCopy(event) {
+        const text = event.currentTarget?.dataset?.copytext || '';
+        this.copyToClipboard(text);
+    }
 
-        const selectedSlot = event.currentTarget.dataset.value;
-        
-        // 1. Set local state to readOnly to prevent multiple clicks
-        this._readOnly = true;
-        this._internalValue = selectedSlot;
+    handleSlotKeydown(event) {
+        const k = event.key;
+        if (k === 'Enter' || k === ' ') {
+            event.preventDefault();
+            this.handleSlotCopy(event);
+        }
+    }
 
-        // 2. Sync the specific value back to the Agent's variable memory
-        this.dispatchEvent(new CustomEvent('valuechange', {
-            detail: {
-                value: selectedSlot 
-            },
-            bubbles: true,
-            composed: true
-        }));
-        
-        // 3. Signal that the user has made a selection to trigger the next response
-        this.dispatchEvent(new CustomEvent('select', {
-            detail: {
-                value: selectedSlot 
-            },
-            bubbles: true,
-            composed: true
-        }));
+    async copyToClipboard(text) {
+        if (!text) {
+            return;
+        }
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'absolute';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            }
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Copied',
+                    message: 'Paste into the message box to confirm your choice.',
+                    variant: 'success',
+                    mode: 'dismissable'
+                })
+            );
+        } catch (err) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Copy failed',
+                    message: 'Select the text manually if needed.',
+                    variant: 'warning',
+                    mode: 'dismissable'
+                })
+            );
+        }
     }
 
     get hasSlots() {

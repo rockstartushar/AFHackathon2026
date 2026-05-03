@@ -33,6 +33,11 @@
 }
 
 .hc-slot-item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
     border: 1px solid var(--slds-g-color-border-base-1, #dddbda);
     border-radius: 999px;
     padding: 0.45rem 0.85rem;
@@ -52,4 +57,24 @@
 .hc-slot-empty {
     margin: 0.25rem 0 0;
     color: var(--slds-g-color-neutral-base-30, #706e6b);
+}
+
+.hc-slot-label {
+    flex: 1;
+    min-width: 0;
+}
+
+.hc-slot-copy-hint {
+    flex-shrink: 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+    opacity: 0.85;
+}
+
+.hc-slot-item:hover .hc-slot-copy-hint,
+.hc-slot-item:focus .hc-slot-copy-hint {
+    opacity: 1;
 }
